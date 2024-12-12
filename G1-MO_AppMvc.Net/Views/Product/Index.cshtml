@@ -1,0 +1,327 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<App.Model.Product>
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    int PageNext = CurrentPage + 1;
+    ViewData["Title"] = "Shop - " + CurrentPage;
+    Layout = "~/views/shared/_layouthome.cshtml";
+    App.Model.ProCateProItemViewModel Product = ViewBag.Product;
+
+    List<App.Model.ProCateProItemViewModel> lsSaleProduct = ViewBag.SaleProduct;
+
+}
+
+@section Style {
+    <style>
+        /* Style the dropdown button */
+        .sort-dropdown {
+            position: relative;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        /* Style the dropdown content (hidden by default) */
+        .sort-dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            /* Style the links inside the dropdown */
+            .sort-dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+                /* Change color of dropdown links on hover */
+                .sort-dropdown-content a:hover {
+                    background-color: #f1f1f1;
+                }
+
+        /* Show the dropdown menu on hover */
+        .sort-dropdown:hover .sort-dropdown-content {
+            display: block;
+        }
+
+        /* Change the background color of the dropdown button when the dropdown content is shown */
+
+    </style>
+}
+
+
+
+
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="/assests/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Organi Shop</h2>
+                    <div class="breadcrumb__option">
+                        <a href="./index.html">Home</a>
+                        <span>Shop</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-5">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <partial name="_CatePartial" />
+
+
+                    </div>
+                    <div class="sidebar__item">
+                        <div id="slider-range"></div>
+                        @* <div class="price-range-wrap">
+                        <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                        data-min="10" data-max="@ViewBag.highestPrice">
+                        <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+                        <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                        <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                        </div>
+                        <div class="range-slider">
+                        <div class="price-input">
+                        <input type="text" id="minamount" value="10">
+                        <input type="text" id="maxamount" value="@ViewBag.highestPrice">
+                        @* <br>
+                        <button type="button"
+                        @* class="range-price-btn btn btn-success btn-block">Choose</button> *
+                        </div>
+                        </div>
+                        </div> *@
+
+                        @*  <div class="widget widget-price">
+                        <h4 class="widget-title">Price</h4>
+                        <div class="price-filte">
+                        <div id="slide-range"></div>
+                        <p class="amount">
+                        Price: <input type="text" id="amount" disabled="">
+                        </p>
+                        </div>
+                        </div> *@
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7">
+                <partial name="_SearchPartial" />
+                <div class="product__discount">
+
+                    <div class="product__discount__slider owl-carousel">
+                        @if (lsSaleProduct != null && lsSaleProduct.Count() > 0)
+                        {
+                            <div class="section-title product__discount__title">
+                                <h2>Sale Off</h2>
+                            </div>
+                            <div class="row">
+                                @foreach (var item in lsSaleProduct)
+                                {
+
+                                    string url = $"/{item.products.Name}-{item.products.IdPro}";
+                                    var discounted = @item.productItems.ProPrice * (@item.productItems.Discount / 100);
+                                    <div class="col-lg-4">
+                                        <div class="product__discount__item">
+                                            <div class="product__discount__item__pic set-bg"
+                                                 data-setbg="/assests/img/product/discount/pd-1.jpg">
+                                                <div class="product__discount__percent">@item.productItems.Discount%</div>
+                                                <ul class="product__item__pic__hover">
+                                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
+
+                                                </ul>
+                                            </div>
+                                            <div class="product__discount__item__text">
+                                                <h5><a href="#">@item.products.Name</a></h5>
+                                                <div class="product__item__price">
+                                                    @discounted VND<span>@item.productItems.ProPrice VND</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+                            </div>
+                        }
+
+                    </div>
+                </div>
+                <div class="filter__item">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-5">
+                             <div class="filter__sort">
+                            <select id="sortOptions" onchange="sortProducts()">
+                            <option value="none">Sort By</option>
+                            <option value="asc">Price Low to High</option>
+                            <option value="desc">Price High to Low</option>
+                            </select>
+
+                            </div>
+                            
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div class="filter__found">
+                                <h6><span>@Model.Count()</span> Products found</h6>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3">
+                        </div>
+                    </div>
+                </div>
+                <!-- SanPham -->
+                <div id="productsContainer" class="row">
+                    @if (Model != null && Model.Count() > 0)
+                    {
+
+                        @foreach (var product in Model)
+                        {
+                            string linkimg = "";
+                            string url = $"/{product.Name}-{product.IdPro}";
+                            <div class="col-lg-4 col-md-6 col-sm-6 product__item">
+                                <div class="product__item">
+                                    @foreach (var img in product.ImgPros)
+                                    {
+                                        linkimg = img.LinkImg;
+                                        break;
+                                    }
+                                    <div class="product__item__pic set-bg" data-setbg="/assests/img/product/@linkimg">
+                                        <ul class="product__item__pic__hover">
+                                            <li><a asp-action="Create" asp-controller="Wish" asp-route-url="Product" asp-route-id="@product.IdPro"><i class="fa fa-heart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6><a href="@url">@product.Name</a></h6>
+                                        @if (product.ProductItems.Count() > 1 && product.ProductItems != null)
+                                        {
+                                            var max = product.ProductItems.Max(u => u.ProPrice);
+                                            var min = product.ProductItems.Min(u => u.ProPrice);
+                                            <h5>@min ~ @max VND</h5>
+                                        }
+                                        else
+                                        {
+                                            var max = product.ProductItems.Max(u => u.ProPrice);
+                                            <h5>@max VND</h5>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    }
+                    else
+                    {
+                        <div class="container d-flex justify-content-center">
+                            <img src="~/assests/img/surprise.png" style="width: 50%" />
+                        </div>
+                    }
+                </div>
+                <!-- Phân trang -->
+                <div aria-label="pagination-area pt-10">
+                    <ul class="pagination justify-content-center">
+                        <pager class="pager-container" options="@PagedListRenderOptions.Bootstrap4PageNumbersPlusPrevAndNext"
+                               list="@Model" asp-area="" asp-controller="Product" asp-action="Index" />
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Section End -->
+@section Scripts {
+    <script>
+        function sortProducts() {
+            var sortOption = document.getElementById('sortOptions').value;
+            var productsContainer = document.getElementById('productsContainer');
+            var products = Array.from(productsContainer.querySelectorAll('.product__item'));
+
+            products.sort(function (a, b) {
+                var priceA = parseFloat(a.dataset.price);
+                var priceB = parseFloat(b.dataset.price);
+
+                if (sortOption === 'asc') {
+                    return priceA - priceB;
+                } else if (sortOption === 'desc') {
+                    return priceB - priceA;
+                } else {
+                    // Reset sorting
+                    return 0;
+                }
+            });
+
+            // Re-append sorted products to the container
+            products.forEach(function (product) {
+                productsContainer.appendChild(product);
+            });
+        }
+
+        @* $(function () {
+        var minPrice = 10; // Giá trị tối thiểu
+        var maxPrice = parseInt('@ViewBag.highestPrice'); // Giá trị tối đa (lấy từ ViewBag)
+
+        $(".price-range").slider({
+        range: true,
+        min: minPrice,
+        max: maxPrice,
+        values: [minPrice, maxPrice],
+        slide: function (event, ui) {
+        $("#minamount").val(ui.values[0]);
+        $("#maxamount").val(ui.values[1]);
+        },
+        stop: function (event, ui) { // Thêm sự kiện stop để gửi Ajax request khi slider dừng
+        var min = ui.values[0];
+        var max = ui.values[1];
+        sendData(min, max);
+        }
+        });
+
+        function sendData(min, max) {
+        $.ajax({
+        url: '/Product/FiltterPrice',
+        dataType: "json",
+        type: "GET",
+        data: {
+        minPrice: min,
+        maxPrice: max
+        },
+        async: true,
+        success: function (results) {
+        if (results.success) {
+        window.location.href = results.redirectUrl;
+        }
+        },
+        error: function (xhr) {
+        alert('error');
+        }
+        });
+        }
+        }); *@
+
+                                                        var priceSlider = $("#slide-range").slider({
+                range: true,
+                min: 0,
+                max: 500,
+                values: [75, 300],
+                slide: function (event, ui) {
+        @* $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] ); *@
+                                                                                                            }
+            });
+
+
+    </script>
+}
+

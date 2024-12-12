@@ -1,0 +1,132 @@
+﻿@*
+For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model List<App.Model.ItemDetailViewModel>
+@using Microsoft.AspNetCore.Http
+
+
+<div class="text-center">
+	<h1>OrderDetailBuyer</h1>
+</div>
+<table class="table table-hover text-nowrap">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Quantity</th>
+			<th>Pro Price</th>
+			<th>Price</th>
+			<th>Review</th>
+		</tr>
+	</thead>
+	<tbody>
+		@if (Model != null && Model.Count() > 0)
+		{
+			@for (int i = 0; i < Model.Count(); i++)
+			{
+				var item = Model[i];
+				<tr>
+					<td>@item.productItem.Name</td>
+					<td>@item.orderDetail.Quantity</td>
+					<td>@item.productItem.ProPrice</td>
+					<td>@item.orderDetail.Price</td>
+
+					@if (ViewBag.OrderInProgress == 4)
+					{
+						<td>
+							<button onclick="showForm(@i)">Review</button>
+
+							<div id="voteCommentForm_@i" style="display: none;">
+								<form method="post" action="/Review/SubmitReview" class="voteForm">
+									<input type="hidden" name="IdPro" value="@item.productItem.IdPro" />
+
+									<label for="rating_@i">Vote</label>
+									<select name="RatingValue" id="rating_@i">
+										<option value="1">1 star</option>
+										<option value="2">2 star</option>
+										<option value="3">3 star</option>
+										<option value="4">4 star</option>
+										<option value="5">5 star</option>
+									</select><br>
+									<label for="comment_@i">Comment:</label><br>
+									<textarea name="Comment" id="comment_@i" rows="4" cols="50"></textarea><br>
+									<button type="submit">Send</button>
+								</form>
+							</div>
+						</td>
+					}
+
+				</tr>
+			}
+		}
+		else
+		{
+			<tr>
+				<div class="text-center">
+					<td colspan="5">Không có đơn hàng chưa duyệt...</td>
+				</div>
+			</tr>
+		}
+		<hr>
+	</tbody>
+</table>
+
+
+<script>
+	function showForm(index) {
+		var form = document.getElementById("voteCommentForm_" + index);
+		form.style.display = "block";
+	}
+
+	document.addEventListener("DOMContentLoaded", function () {
+		var forms = document.querySelectorAll(".voteForm");
+		forms.forEach(function (form, index) {
+			form.addEventListener("submit", function (event) {
+				event.preventDefault(); // Ngăn chặn gửi form mặc định
+
+				// Lấy dữ liệu từ form
+				var rating = document.getElementById("rating_" + index).value;
+				var comment = document.getElementById("comment_" + index).value;
+				var idPro = form.querySelector('input[name="IdPro"]').value; // Sử dụng form.querySelector để chọn phần tử input
+
+				// Tạo một object chứa dữ liệu form
+				var formData = new FormData();
+				formData.append("RatingValue", rating);
+				formData.append("Comment", comment);
+				formData.append("IdPro", idPro); // Lấy giá trị IdPro từ trường ẩn trong form
+
+				// Gửi dữ liệu form qua Ajax
+				var xhr = new XMLHttpRequest();
+				xhr.open("POST", "/Review/SubmitReview", true); // Đặt đường dẫn của controller ở đây
+				xhr.onreadystatechange = function () {
+					if (xhr.readyState === 4 && xhr.status === 200) {
+						// Xử lý phản hồi từ server nếu cần
+						alert(xhr.responseText); // Hiển thị phản hồi từ server (nếu có)
+					}
+				};
+				xhr.send(formData);
+
+				// Hiển thị thông báo cho người dùng
+				alert("Rating: " + rating + "\nComment: " + comment);
+
+				// Đặt lại form
+				form.reset();
+				form.style.display = "none";
+			});
+		});
+	});
+</script>
+
+
+@{
+	var ordernProgress = ViewBag.OrderInProgress;
+	var orderID = ViewBag.IdOrder;
+}
+@if (ordernProgress == 1)
+{
+	<a class="btn btn-danger float-right" asp-controller="UserOrder" asp-action="CancelOrder"
+		asp-route-id="@orderID">Cancel</a>
+
+}

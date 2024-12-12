@@ -1,0 +1,10 @@
+﻿@model List<App.Model.Wishlist>
+@if (Model != null && Model.Count() > 0)
+{
+    //href # gì đó nếu muốn di chuyển đến tài nguyên khác
+    <a asp-action="Index" asp-controller="Wish"><i class="fa fa-heart"></i> <span>@Model.Count()</span></a>
+}
+else
+{
+    <a asp-action="Index" asp-controller="Wish"><i class="fa fa-heart"></i> <span>0</span></a>
+}

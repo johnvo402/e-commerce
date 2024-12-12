@@ -1,0 +1,245 @@
+﻿@inject SignInManager<AppUser> SignInManager
+
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register new account";
+}
+
+
+
+<div class="container">
+    <h1>@ViewData["Title"].</h1>
+    <div class="row">
+        <div class="col-md-8">
+            <section id="section1">
+                <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+                    <h4>Register with Buyer</h4>
+                    <hr />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <fieldset>
+                        <legend>Personal information</legend>
+
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input asp-for="UserName" class="form-control" placeholder="UserName" />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input asp-for="FullName" class="form-control" placeholder="Full Name" required />
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input asp-for="Email" class="form-control" placeholder="Email" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="ConfirmPassword" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Infomation contact</legend>
+
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input asp-for="Phone" class="form-control" placeholder="Phone" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input asp-for="HomeAddess" class="form-control" placeholder="Home Addess" />
+                                <span asp-validation-for="HomeAddess" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <input type="hidden" value="0" name="ReSeller" />
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="submit" class="btn btn-primary">Sign Up</button>
+                        </div>
+                    </div>
+                </form>
+
+            </section>
+            <section id="section2" style="display:none;">
+                <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+                    <h4>Register with Seller.</h4>
+                    <hr />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <fieldset>
+                        <legend>Personal information</legend>
+
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input asp-for="UserName" class="form-control" placeholder="Username" />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input asp-for="FullName" class="form-control" placeholder="Full Name" required />
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Gender" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <select asp-for="Gender" class="form-select-lg">
+                                    <option selected value="1">Male</option>
+                                    <option value="0">Female</option>
+                                </select>
+                                <span asp-validation-for="Gender" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-5">
+                            
+                            <div class="col-md-10">
+                                <label asp-for="BirthDay" class="col-md-2 control-label"></label>
+                                <input asp-for="BirthDay" class="form-control" placeholder="Birthday" required />
+                                <span asp-validation-for="BirthDay" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input asp-for="Email" class="form-control" placeholder="Email" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm password" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Infomation contact</legend>
+
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input asp-for="Phone" class="form-control" placeholder="Phone" required />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input asp-for="HomeAddess" class="form-control" placeholder="Home Addess" required />
+                                <span asp-validation-for="HomeAddess" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <input type="hidden" value="1" name="ReSeller" />
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="submit" class="btn btn-primary">Sign Up</button>
+                        </div>
+                    </div>
+                </form>
+
+            </section>
+            <div class="row justify-content-center">
+                <button class="btn bg-dark btn-info w-25" id="btnSection1" onclick="showSection('section1'); changeButtonColor('btnSection1')">Buyer</button>
+                <button class="btn btn-info w-25" id="btnSection2" onclick="showSection('section2'); changeButtonColor('btnSection2')">Seller</button>
+            </div>
+            
+
+
+        </div>
+        <div class="col-md-4">
+            <section>
+                <h4>Login with</h4>
+                <hr />
+                @{
+                    var schemes = await SignInManager.GetExternalAuthenticationSchemesAsync();
+                    var loginProviders = schemes.ToList();
+                    if (loginProviders.Count == 0)
+                    {
+                        <div>
+                            <p>
+                                Ứng dụng chưa hỗ trợ đăng nhập từ tài khoản ngoài
+                            </p>
+                        </div>
+                    }
+                    else
+                    {
+                        <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+                            <div>
+                                <p>
+                                    @foreach (var provider in loginProviders)
+                                    {
+                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.Name account">@provider.Name</button>
+                                    }
+                                </p>
+                            </div>
+                        </form>
+                    }
+                }
+            </section>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+        
+            function showSection(sectionId) {
+                document.getElementById('section1').style.display = 'none';
+                document.getElementById('section2').style.display = 'none';
+                document.getElementById(sectionId).style.display = 'block';
+            }
+
+            function changeButtonColor(buttonId) {
+                // Reset màu của cả hai nút
+            document.getElementById('btnSection1').classList.remove('bg-dark');
+            document.getElementById('btnSection2').classList.remove('bg-dark');
+
+                // Thay đổi màu của nút được nhấn
+            document.getElementById(buttonId).classList.add('bg-dark');
+            }
+        
+    </script>
+}

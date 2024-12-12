@@ -1,0 +1,20 @@
+﻿<div class="hero__categories">
+    <div class="hero__categories__all">
+        <i class="fa fa-bars"></i>
+        <span>All departments</span>
+    </div>
+    <ul id="txtCategory">
+        <li><a asp-controller="Product" asp-action="FiltterCate" asp-route-IdCate="0">All</a></li>
+        @if (ViewBag.lsCategory != null)
+        {
+            foreach (var category in ViewBag.lsCategory)
+            {
+                <li><a asp-controller="Product" asp-action="FiltterCate" asp-route-IdCate="@category.IdCate">@category.NameCate</a></li>
+            }
+        }
+        else
+        {
+            <li>No categories available</li>
+        }
+    </ul>
+</div>

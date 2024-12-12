@@ -1,0 +1,98 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using App.Models
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Seller</title>
+	<!-- plugins:css -->
+	<link rel="stylesheet" href="~/AdminAssets/vendors/mdi/css/materialdesignicons.min.css">
+	<link rel="stylesheet" href="~/AdminAssets/vendors/css/vendor.bundle.base.css">
+	    <link rel="stylesheet" href="~/assests/css/style.css" type="text/css">
+    <link href="~/css/site.css" rel="stylesheet" />
+
+	<!-- endinject -->
+	<!-- Plugin css for this page -->
+	<!-- End plugin css for this page -->
+	<!-- inject:css -->
+	<!-- endinject -->
+	<!-- Layout styles -->
+	<link rel="stylesheet" href="~/AdminAssets/css/style.css">
+	<!-- End layout styles -->
+	<link rel="shortcut icon" href="~/AdminAssets/images/favicon.png" />
+	@await RenderSectionAsync("Style", required: false)
+</head>
+<body>
+	<div class="container-scroller">
+
+		<!-- partial:partials/_navbar.html -->
+		@await Html.PartialAsync("_NavbarPartialView.cshtml")
+		<!-- partial -->
+		<div class="container-fluid page-body-wrapper">
+			<!-- partial:partials/_sidebar.html -->
+			@await Html.PartialAsync("_SidebarPartialView.cshtml")
+			<!-- partial -->
+			<div class="main-panel">
+				@RenderBody()
+				<!-- content-wrapper ends -->
+				<!-- partial:partials/_footer.html -->
+				
+				<!-- partial -->
+			</div>
+			<!-- main-panel ends -->
+		</div>
+		<!-- page-body-wrapper ends -->
+	</div>
+	@if (SignInManager.IsSignedIn(User))
+    {
+        <partial name="_ChatPartial" />
+    }
+	<!-- container-scroller -->
+	<!-- plugins:js -->
+	<script src="~/AdminAssets/vendors/js/vendor.bundle.base.js"></script>
+	<!-- endinject -->
+	<!-- Plugin js for this page -->
+	<script src="~/AdminAssets/vendors/chart.js/Chart.min.js"></script>
+	<script src="~/AdminAssets/js/jquery.cookie.js" type="text/javascript"></script>
+	<!-- End plugin js for this page -->
+	<!-- inject:js -->
+	<script src="~/AdminAssets/js/off-canvas.js"></script>
+	<script src="~/AdminAssets/js/hoverable-collapse.js"></script>
+	<script src="~/AdminAssets/js/misc.js"></script>
+	<!-- endinject -->
+	<!-- Custom js for this page -->
+	<script src="~/AdminAssets/js/dashboard.js"></script>
+	<script src="~/AdminAssets/js/todolist.js"></script>
+	<script src="https://kit.fontawesome.com/a2cbbc509a.js" crossorigin="anonymous"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/lib/KnockoutJS/knockout-3.5.1.js"></script>
+    <script src="~/js/site.js"></script>
+    <script src="~/js/chat.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+            const chatIcon = document.getElementById('chat-icon');
+            
+            const chatBox = document.getElementById('chat-box');
+            const closeBtn = document.getElementById('close-btn');
+            
+
+            chatIcon.addEventListener('click', function () {
+                chatBox.style.display = 'block';
+            });
+
+            closeBtn.addEventListener('click', function () {
+                chatBox.style.display = 'none';
+            });
+        });
+	</script>
+	<!-- End custom js for this page -->
+	@await Component.InvokeAsync("Notyf")
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

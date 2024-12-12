@@ -1,0 +1,69 @@
+﻿<header class="header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="header__top__left">
+                        <ul>
+                            <li><i class="fa fa-envelope"></i> thuvtce170522@fpt.edu.vn</li>
+                            <li>Free Shipping for all Order </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="header__top__right">
+
+                        
+                        
+
+                            <partial name="_LoginPartial" />
+
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="header__logo">
+                    <a href="/"><img src="assests/img/logo.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <nav class="header__menu">
+                    <ul class="text-center">
+                        <li class="active"><a href="/">Home</a></li>
+                        <li><a asp-area="" asp-controller="Product" asp-action="Index">Shop</a></li>
+                        <li><a asp-area="Admin" asp-controller="Contact" asp-action="SendContact">Contact</a></li>
+
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3">
+                <div class="header__cart">
+                    <ul>
+                        <li id="numberWish">@await Component.InvokeAsync("HeaderCart")</li>
+                        <li id="numberCart">
+                            @await Component.InvokeAsync("NumberCart")
+                        </li>
+                    </ul>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="humberger__open">
+            <i class="fa fa-bars"></i>
+        </div>
+    </div>
+</header>
+@section Scripts{
+    <script>
+        window.onload = function () {
+            // Gọi action và tải kết quả vào phần tử có id là "numberCart"
+            $("#numberCart").load("/AjaxContent/NumberCart");
+            $("#numberWish").load("/AjaxContent/HeaderCart");
+    </script>
+   
+}

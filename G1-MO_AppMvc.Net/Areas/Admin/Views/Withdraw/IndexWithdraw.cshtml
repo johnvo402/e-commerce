@@ -1,0 +1,75 @@
+﻿@model List<App.Model.Wallet>
+
+@{
+    ViewData["Title"] = "Request Withdraw";
+    Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
+}
+
+<h5 class="text-center"></h5>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Số tiền</th>
+            <th scope="col">Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var request in Model)
+        {
+            <tr>
+                <th scope="row">@request.IdAccNavigation.UserName </th>
+                <td>@request.Request VND</td>
+                <td>
+                    <button class="btn btn-primary mr-2" data-amount="@request.Request" data-id="@request.IdWallet" data-account-name="@request.NameCard" data-bank-name="@request.NameBank" data-account-no="@request.NumberCard" onclick="infoAccount()">
+                        Bank account infomation
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal fade" id="infoAccountModal" tabindex="-1" aria-labelledby="infoAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoAccountModalLabel">Change Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+               
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <form asp-action="TransferMoney" asp-controller="RequestWithdraw">
+                    <input type="hidden" name="id" id="IdWallet" />
+                    <button type="submit" class="btn btn-primary">Transferred</button>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        function infoAccount() {
+            var amount = document.querySelector("[data-amount]").getAttribute("data-amount");
+            var accountName = document.querySelector("[data-account-name]").getAttribute("data-account-name");
+            var bankName = document.querySelector("[data-bank-name]").getAttribute("data-bank-name");
+            var accountNo = document.querySelector("[data-account-no]").getAttribute("data-account-no");
+            var idwallet = document.querySelector("[data-id]").getAttribute("data-id");
+            document.getElementById("IdWallet").value = idwallet;
+
+
+            // Tạo URL cho hình ảnh
+            var imageURL = "https://img.vietqr.io/image/" + bankName + "-" + accountNo + "-compact2.jpg?amount=" + (amount-(amount * 5/100)) + "&addInfo=Rut%20tien%20tu%20MaketOnline&accountName=" + accountName;
+
+            // Hiển thị hình ảnh trong thẻ <img>
+            document.querySelector(".modal-body").innerHTML = '<img src="' + imageURL + '" style="width:100%;"/>';
+            $('#infoAccountModal').modal('show');
+        }
+    </script>
+}

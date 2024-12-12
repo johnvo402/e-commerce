@@ -1,0 +1,171 @@
+﻿@{
+    ViewData["Title"] = "Products list";
+
+}
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<App.Model.ProJoinCat>
+<h1>Products List</h1>
+<hr />
+<a asp-area="Seller" asp-action="ExportProduct" asp-controller="Excel" class="btn btn-success" onclick="exportSuccess()"
+   title="Export data to Excel">Export Excel</a>
+
+<script>
+    function exportSuccess() {
+        alert('Export success!');
+    }
+</script>
+@section Style {
+    <style>
+        .product__pagination,
+        .blog__pagination {
+            padding-top: 10px;
+        }
+
+            .product__pagination a,
+            .blog__pagination a {
+                display: inline-block;
+                width: 30px;
+                height: 30px;
+                border: 1px solid #b2b2b2;
+                font-size: 14px;
+                color: #b2b2b2;
+                font-weight: 700;
+                line-height: 28px;
+                text-align: center;
+                margin-right: 16px;
+                -webkit-transition: all, 0.3s;
+                -moz-transition: all, 0.3s;
+                -ms-transition: all, 0.3s;
+                -o-transition: all, 0.3s;
+                transition: all, 0.3s;
+            }
+
+                .product__pagination a:hover,
+                .blog__pagination a:hover {
+                    background: #7fad39;
+                    border-color: #7fad39;
+                    color: #ffffff;
+                }
+
+                .product__pagination a:last-child,
+                .blog__pagination a:last-child {
+                    margin-right: 16px;
+                }
+
+            .product__pagination .active {
+                display: inline-block;
+                width: 30px;
+                height: 30px;
+                border: 1px solid #b2b2b2;
+                font-size: 14px;
+                background: #7fad39;
+                border-color: #7fad39;
+                color: #ffffff;
+                font-weight: 700;
+                line-height: 28px;
+                text-align: center;
+                margin-right: 16px;
+                -webkit-transition: all, 0.3s;
+                -moz-transition: all, 0.3s;
+                -ms-transition: all, 0.3s;
+                -o-transition: all, 0.3s;
+                transition: all, 0.3s;
+            }
+    </style>
+}
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="col-md-4">Product Name</th>
+                    <th class="col-md-4">Description</th>
+                    <th class="col-md-4">Category Name</th>
+                    <th>Action</th>
+                    <th>Images</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.products.Name
+                        </td>
+                        <td>
+                            @item.products.Description
+                        </td>
+                        <td>
+                            @item.categories.NameCate
+                        </td>
+
+                        @if (item.products.StatusPro == 1)
+                        {
+                            <td>
+                                <div class="btn-group mr-2" role="group">
+                                    <a asp-action="Details" asp-route-id="@item.products.IdPro"
+                                       class="btn btn-primary">Details</a>
+                                    <a asp-action="Edit" asp-route-id="@item.products.IdPro" class="btn btn-success">Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@item.products.IdPro" class="btn btn-danger">Delete</a>
+                                    <a asp-action="Hidden" asp-route-id="@item.products.IdPro" class="btn btn-dark">Hidden</a>
+                                </div>
+                            </td>
+                        }
+                       @*  else if (item.products.StatusPro == 2)
+                        {
+                            <td>
+                                <div class="btn-group mr-2" role="group">
+                                    <a asp-action="Details" asp-route-id="@item.products.IdPro" class="btn btn-primary">Details</a>
+                                    <a asp-area="Seller" asp-controller="Products" asp-action="Enable"
+                                       asp-route-id="@item.products.IdPro" class="btn btn-primary">Enable</a>
+                                </div>
+                            </td>
+                        } *@
+                        else if (item.products.StatusPro == 3)
+                        {
+                            <td>
+                                <div class="btn-group mr-2" role="group">
+                                    Product is locked
+                                    <a asp-area="Seller" asp-controller="Contact" asp-action="Index"
+                                       class="btn btn-primary">Contac</a>
+                                </div>
+                            </td>
+                        }
+                        else if (item.products.StatusPro == 0)
+                        {
+                            <td>
+                                <div class="btn-group mr-2" role="group">
+                                    <a asp-action="Details" asp-route-id="@item.products.IdPro" class="btn btn-dark">Details</a>
+                                    <a asp-area="Seller" asp-controller="Products" asp-action="Enable"
+                                       asp-route-id="@item.products.IdPro" class="btn btn-primary">Enable</a>
+                                </div>
+                            </td>
+                        }
+                        <td>
+                            <a href="#" class="btn btn-danger product-image-btn" data-id="@item.products.IdPro">
+                                Product
+                                Image
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="product__pagination">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }))
+        </div>
+    </div>
+</div>
+
+<hr />
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.product-image-btn').click(function () {
+                var id = $(this).data('id');
+                window.location.href = '/seller/product/ProImage/' + id;
+            });
+        });
+    </script>
+}

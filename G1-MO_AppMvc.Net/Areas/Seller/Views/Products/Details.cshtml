@@ -1,0 +1,107 @@
+﻿@model List<App.Model.ProCateProItemViewModel>
+﻿
+
+@{
+	ViewData["Title"] = "Details";
+	var count = 0;
+}
+
+<h1>Details</h1>
+<div style="display: flex; justify-content: space-between;">
+    <div style="flex-grow: 1; margin-right: 10px;">
+        <a asp-action="Index" class="btn btn-success">Back to List</a>
+    </div>
+
+    <div style="flex-grow: 1; margin-right: 0;">
+        <a asp-area="Seller" asp-controller="Products" asp-action="CreateItems" asp-route-id="@ViewBag.IDPro" class="btn btn-success">
+            Create New Items
+        </a>
+    </div>
+</div>
+<br />
+<hr />
+<div class="row">
+	@foreach (var item in Model)
+	{ 
+		if (item.productItems.StatusProItem != 2)
+		{
+			count++;
+			<div class="col-md-6">
+				<dl class="row">
+					<dt class="col-sm-2">
+						<label asp-for="@item.products.Name"></label>
+					</dt>
+					<dd class="col-sm-10">
+						<input type="text" asp-for="@item.products.Name" readonly class="form-control">
+					</dd>
+					<dt class="col-sm-2">
+						<label asp-for="@item.productItems.Quantity"></label>
+					</dt>
+					<dd class="col-sm-10">
+						<input type="number" asp-for="@item.productItems.Quantity" readonly class="form-control">
+					</dd>
+
+					<dt class="col-sm-2">
+						<label>Product Item</label>
+					</dt>
+					<dd class="col-sm-10">
+						<input asp-for="@item.productItems.Name" readonly class="form-control">
+					</dd>
+					<dt class="col-sm-2">
+						<label asp-for="@item.productItems.ProPrice"></label>
+					</dt>
+					<dd class="col-sm-10">
+						<input type="number" asp-for="@item.productItems.ProPrice" readonly class="form-control">
+					</dd>
+					<dt class="col-sm-2">
+						<label asp-for="@item.products.Description"></label>
+					</dt>
+					<dd class="col-sm-10">
+						<input type="text" asp-for="@item.products.Description" readonly class="form-control">
+					</dd>
+					<dt class="col-sm-2">
+						<label asp-for="@item.categories.NameCate"></label>
+					</dt>
+					<dd class="col-sm-10">
+						<input type="text" asp-for="@item.categories.NameCate" readonly class="form-control">
+					</dd>
+				</dl>
+				<div class="col-sm-12">
+					<div class="btn-group" role="group" aria-label="Item Actions">
+						<a asp-action="EditItems" asp-route-id="@item.productItems.IdProItem" class="btn btn-primary">Edit</a>
+						<!--<a asp-area="Seller" asp-controller="Products" asp-action="DeleteItems" asp-route-id="@item.productItems.IdProItem" class="btn btn-danger">Delete</a>
+						-->
+
+
+						<a href="/seller/product/deleteItem?id=@item.productItems.IdProItem" class="delete-btn btn btn-danger" data-id="@item.productItems.IdProItem">Delete</a>
+						<script>
+							// Chọn tất cả các phần tử có class "delete-btn" và gán sự kiện click cho chúng
+							document.querySelectorAll('.delete-btn').forEach(function (btn) {
+								btn.addEventListener('click', function (e) {
+									e.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ a
+
+									// Hiển thị hộp thoại xác nhận
+									if (confirm("Are you sure you want to delete this item?")) {
+										// Nếu người dùng đồng ý, chuyển hướng đến action DeleteItems với id tương ứng
+										var id = this.getAttribute('data-id');
+										window.location.href = "/seller/product/deleteItem?id=" + id;
+									}
+								});
+							});
+						</script>
+					</div>
+					<br />
+					<br />
+					<br />
+					<br />
+					<br />
+					<br />
+				</div>
+			</div>
+		}
+	}
+	@if (count == 0)
+	{
+		<h1>There is not product items</h1>
+	}
+</div>

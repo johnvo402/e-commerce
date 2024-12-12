@@ -1,0 +1,42 @@
+@{
+    ViewData["Title"] = "Removed";
+
+}
+@model List<App.Model.ProJoinCat>
+
+<h1>Products List</h1>
+<hr />
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th class="col-md-4">Product Name</th>
+            <th class="col-md-4">Description</th>
+            <th class="col-md-4">Category Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.products.Name
+                </td>
+                <td>
+                    @item.products.Description
+                </td>
+                <td>
+                    @item.categories.NameCate
+                </td>
+                <td>
+                    <div class="btn-group mr-2" role="group">
+                        <a asp-action="RemovedDetail" asp-route-id="@item.products.IdPro"
+                            class="btn btn-primary">Details</a>
+                        <a asp-action="Enable" asp-route-id="@item.products.IdPro" class="btn btn-danger">Enable</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr />

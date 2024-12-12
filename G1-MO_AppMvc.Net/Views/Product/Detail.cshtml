@@ -1,0 +1,741 @@
+﻿@using App.Model
+@model App.Model.ProCateProItemViewModel
+
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<App.Model.Product> lsProducts = ViewBag.lsProduct;
+    Layout = "~/views/shared/_layouthome.cshtml";
+}
+@section Style {
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .selected-option {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+
+        .content-review {
+            display: none;
+        }
+
+        #loadMore {
+            width: 200px;
+            color: #fff;
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            background-color: forestgreen;
+            transition: .3s;
+        }
+
+            #loadMore:hover {
+                color: forestgreen;
+                background-color: #fff;
+                border: 1px solid forestgreen;
+                text-decoration: none;
+            }
+
+        .noContent {
+            color: forestgreen !important;
+            background-color: transparent !important;
+            border: 1px solid forestgreen !important;
+            pointer-events: none;
+        }
+    </style>
+}
+@{
+    int numreview = 0;
+    if (Model.products.Reviews.Count() > 0)
+    {
+        numreview = Model.products.Reviews.Count();
+    }
+
+}
+
+<!-- Breadcrumb Section End -->
+<!-- Product Details Section Begin -->
+<section class="product-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__pic">
+                    <div class="product__details__pic__item">
+                        @foreach (var img in Model.products.ImgPros)
+                        {
+                            <img class="product__details__pic__item--large"
+                                 src="assests/img/product/@img.LinkImg" alt="">
+                            break;
+                        }
+
+                    </div>
+                    <div class="product__details__pic__slider owl-carousel">
+                        @foreach (var img in Model.products.ImgPros)
+                        {
+                            <img data-imgbigurl="assests/img/product/@img.LinkImg"
+                                 src="assests/img/product/@img.LinkImg" alt="">
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+            @{
+                double review = 0;
+                if (Model.products.Reviews.Count() > 0)
+                {
+                    review = Model.products.Reviews.Average(r => r.RatingValue);
+                }
+
+            }
+            <div class="col-lg-6 col-md-6" style="display: flex;
+    flex-direction: column;
+    justify-content: space-between;">
+                <div class="product__details__text">
+                    <h3>@Model.products.Name</h3>
+
+                    @if (review == 1)
+                    {
+                        <div class="product__details__rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+
+
+                            <span>(@numreview reviews)</span>
+                        </div>
+                    }
+                    else if (review > 1 && review < 2)
+                    {
+                        <div class="product__details__rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-half-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+
+
+                            <span>(@numreview reviews)</span>
+                        </div>
+
+
+                    }
+                    else if (review == 2)
+                    {
+                        <div class="product__details__rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+
+
+                            <span>(@numreview reviews)</span>
+                        </div>
+
+
+                    }
+                    else if (review > 2 && review < 3)
+                    {
+                        <div class="product__details__rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-half-o"></i>
+
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+
+                            <span>(@numreview reviews)</span>
+                        </div>
+
+
+                    }
+                    else if (review == 3)
+                    {
+                        <div class="product__details__rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+
+
+                            <span>(@numreview reviews)</span>
+                        </div>
+
+
+                    }
+                    else if (review > 3 && review < 4)
+                    {
+                        <div class="product__details__rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-half-o"></i>
+                            <i class="fa fa-star-o"></i>
+
+
+                            <span>(@numreview reviews)</span>
+                        </div>
+
+
+                    }
+                    else if (review == 4)
+                    {
+                        <div class="product__details__rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+
+
+                            <span>(@numreview reviews)</span>
+                        </div>
+
+
+                    }
+                    else if (review > 4 && review < 5)
+                    {
+                        <div class="product__details__rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-half-o"></i>
+
+
+                            <span>(@numreview reviews)</span>
+                        </div>
+
+
+                    }
+                    else if (review == 5)
+                    {
+                        <div class="product__details__rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+
+
+                            <span>(@numreview reviews)</span>
+                        </div>
+
+
+                    }
+
+
+                    @if (Model.products.ProductItems.Count() > 1 && Model.products.ProductItems != null)
+                    {
+                        var max = Model.products.ProductItems.Max(u => u.ProPrice);
+                        var min = Model.products.ProductItems.Min(u => u.ProPrice);
+                        <div class="product__details__price" id="productPrice">@min ~ @max VND</div>
+                    }
+                    else
+                    {
+                        var max = Model.products.ProductItems.Max(u => u.ProPrice);
+
+
+                        <div class="product__details__price" id="productPrice">@max VND</div>
+                    }
+
+                    <div class="btn-group mt-2  mb-2" role="group" aria-label="Kinds">
+
+                        @if (Model.products.ProductItems != null)
+                        {
+                            <select id="txtitem" asp-for="@Model.products.ProductItems" onchange="updatePrice()">
+                                <option disabled selected>Choice Kind</option>
+                                @foreach (var item in Model.products.ProductItems)
+                                {
+                                    if (item.StatusProItem == 0)
+                                    {
+                                        <option data-price="@item.ProPrice" disabled value="@item.IdProItem">@item.Name</option>
+                                    }
+                                    else if (item.StatusProItem == 1)
+                                    {
+                                        <option data-price="@item.ProPrice" value="@item.IdProItem">@item.Name</option>
+                                    }
+
+                                }
+                            </select>
+                        }
+                        @*  else
+                        {
+                        @foreach (var item in Model.products.ProductItems)
+                        {
+
+                        <input type="hidden" id="txtitem" asp-for="@Model.products.ProductItems" data-price="@item.ProPrice" value="@item.IdProItem" />
+                        }
+
+                        } *@
+
+
+                        <!-- Thêm các nút hoặc thẻ khác nếu cần -->
+                    </div>
+
+                    <div class="prodcut__details__addtocart">
+                        <span class="product__details__quantity">
+                            <div class="quantity">
+                                <div class="pro-qty">
+                                    <input id="txtsoluong" name="txtsoluong" type="text" value="1" min="1" max="">
+                                </div>
+                            </div>
+                        </span>
+                        @* Sử dụng ajax *@
+                        <span class="add-to-cart">
+                            <button data-product-id="@Model.products.IdPro" data-price="@Model.productItems.ProPrice" class="add-to-cart-btn primary-btn">ADD TO CARD</button>
+
+                            <input type="hidden" id="IdProItem" value="@Model.productItems.IdProItem" />
+                        </span>
+
+                        @* wicklist *@
+                        <a asp-action="Create" asp-controller="Wish" asp-route-url="/@Model.products.Name-@Model.products.IdPro" asp-route-id="@Model.products.IdPro" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                        <ul>
+
+                            <!--Bổ sung sau: các mục nên link vào được!-->
+                            <li><b>Categories: </b> <span>@Model.products.IdCateNavigation.NameCate</span></li>
+
+                        </ul>
+                    </div>
+
+
+                </div>
+                <div class="card">
+                    @*  <div class="card-body d-flex align-items-center" style="padding: 20px;">
+                    <!-- Avatar image in rectangular frame -->
+                    <a asp-controller="ShopSeller" asp-action="Index"
+                    asp-route-id_acc="@Model.products.IdAcc"
+                    class="d-flex align-items-center mr-4"> </a>
+                    <!-- Avatar image in circular frame -->
+                    <img src="/images/icons/@Model.products.IdAccNavigation.Avt"
+                    class="rounded-circle" style="width: 100px;" alt="Avatar" />
+                    <div class="col">
+                    <h3 class="row">@Model.products.IdAccNavigation.FullName</h3>
+                    <div class="row">
+                    <div>
+
+                    <div class="modal-body">
+                    <input type="hidden" class="form-control" id="roomName" value="@ViewBag.username.UserName" placeholder="Room name">
+                    </div>
+                    <div id="chat-shop">
+                    <!-- Sử dụng thẻ i để chèn biểu tượng Font Awesome vào nút -->
+                    <button data-dismiss="modal" data-bind="click: createRoom" class="btn btn-primary">
+                    <i class="fas fa-comment"></i> Chat Now
+                    </button>
+                    </div>
+
+                    </div>
+                    <div>
+                    <div class="modal-body"></div>
+                    <div>
+                    <a asp-controller="ShopSeller" asp-action="Index"
+                    asp-route-id_acc="@Model.products.IdAcc"
+                    class="btn btn-info">Xem Shop</a>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    </div> *@
+
+                    <!-- content -->
+                    <div class="card flex-row p-8 card-product">
+                        <div>
+                            <!-- img -->
+                            <img src="/images/icons/@Model.products.IdAccNavigation.Avt" alt="" class="rounded-circle icon-shape icon-xl">
+                        </div>
+
+                        <div class="ms-6">
+                            <h5 class="mb-1">
+                                <a asp-controller="ShopSeller" asp-action="Index"
+                                   asp-route-id_acc="@Model.products.IdAcc" class="text-inherit no-underline">@Model.products.IdAccNavigation.FullName</a>
+                            </h5>
+
+
+                            <div>
+                                <!-- badge -->
+                                <div class="badge text-bg-light border">
+
+                                    <input type="hidden" class="form-control" id="roomName" value="@ViewBag.username.UserName" placeholder="Room name">
+
+
+                                    <!-- Sử dụng thẻ i để chèn biểu tượng Font Awesome vào nút -->
+                                    <button data-dismiss="modal" data-bind="click: createRoom" id="chat-shop" class="btn btn-default btn-sm">
+                                        <i class="fas fa-comment"></i> Chat Now
+                                    </button>
+
+                                </div>
+                                <!-- badge -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Seller info Start -->
+            <br>
+            <div class="col-lg-12">
+                <!-- Breadcrumb Section Begin -->
+                <div class="product__details__tab">
+                    <div class="mb-5">
+                        <div class="row">
+                            <div class="col-lg-12 text-center">
+
+
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <!-- Seller info End -->
+            <div class="col-lg-12">
+                <div class="product__details__tab">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
+                               aria-selected="true">Description</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
+                               aria-selected="false">Reviews <span>(@numreview)</span></a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <div class="product__details__tab__desc">
+                                <h6>Products Infomation</h6>
+                                <p>
+                                    @Model.products.Description
+                                </p>
+
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="tabs-3" role="tabpanel">
+                            <div class="product__details__tab__desc">
+                                @if (Model.products.Reviews.Count() > 0)
+                                {
+                                    <div id="review-container" class="list-group">
+                                        @foreach (var re in Model.products.Reviews)
+                                        {
+                                            <div class="list-group-item content-review">
+                                                <div class="d-flex w-100 justify-content-between product__details__text">
+
+
+                                                    @if (re.RatingValue == 1)
+                                                    {
+                                                        <div class="product__details__rating">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+
+
+                                                            <span>(@re.RatingValue / 5)</span>
+                                                        </div>
+                                                    }
+                                                    else if (re.RatingValue > 1 && re.RatingValue < 2)
+                                                    {
+                                                        <div class="product__details__rating">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star-half-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+
+
+                                                            <span>(@re.RatingValue / 5)</span>
+                                                        </div>
+
+
+                                                    }
+                                                    else if (re.RatingValue == 2)
+                                                    {
+                                                        <div class="product__details__rating">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+
+
+                                                            <span>(@re.RatingValue / 5)</span>
+                                                        </div>
+
+
+                                                    }
+                                                    else if (re.RatingValue > 2 && re.RatingValue < 3)
+                                                    {
+                                                        <div class="product__details__rating">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star-half-o"></i>
+
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+
+                                                            <span>(@re.RatingValue / 5)</span>
+                                                        </div>
+
+
+                                                    }
+                                                    else if (re.RatingValue == 3)
+                                                    {
+                                                        <div class="product__details__rating">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+
+
+                                                            <span>(@re.RatingValue / 5)</span>
+                                                        </div>
+
+
+                                                    }
+                                                    else if (re.RatingValue > 3 && re.RatingValue < 4)
+                                                    {
+                                                        <div class="product__details__rating">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star-half-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+
+
+                                                            <span>(@re.RatingValue / 5)</span>
+                                                        </div>
+
+
+                                                    }
+                                                    else if (re.RatingValue == 4)
+                                                    {
+                                                        <div class="product__details__rating">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star-o"></i>
+
+
+                                                            <span>(@re.RatingValue / 5)</span>
+                                                        </div>
+
+
+                                                    }
+                                                    else if (re.RatingValue > 4 && re.RatingValue < 5)
+                                                    {
+                                                        <div class="product__details__rating">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star-half-o"></i>
+
+
+                                                            <span>(@re.RatingValue / 5s)</span>
+                                                        </div>
+
+
+                                                    }
+                                                    else if (re.RatingValue == 5)
+                                                    {
+                                                        <div class="product__details__rating">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+
+
+                                                            <span>(@re.RatingValue / 5)</span>
+                                                        </div>
+
+
+                                                    }
+
+                                                    <small>@re.ReviewDate</small>
+                                                </div>
+                                                <p class="mb-1">@re.Comment</p>
+                                                <small class="d-flex align-items-center">by <img style="width: 30px; height: 30px;" class="rounded-circle mr-2 ml-2" src="/images/icons/@re.IdAccNavigation.Avt" alt="User Image" class="user-img"> @re.IdAccNavigation.FullName</small>
+
+                                            </div>
+                                        }
+
+
+                                        <!-- Add more reviews as needed -->
+                                    </div>
+
+                                    <a href="#" id="loadMore">Load More</a>
+                                }
+                                else
+                                {
+                                    <div class="container">
+                                        <img class="text-center w-25" src="/assests//img/cart/empty-cart.png" />
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Details Section End -->
+<!-- Related Product Section Begin -->
+<section class="related-product">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title related__product__title">
+                    <h2>Related Product</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @if (lsProducts != null)
+            {
+
+                foreach (var item in lsProducts)
+                {
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="product__item">
+                            @foreach (var img in item.ImgPros)
+                            {
+                                <div class="product__item__pic set-bg" data-setbg="assests/img/product/@img.LinkImg">
+                                    <ul class="product__item__pic__hover">
+                                        <li><a asp-action="Create" asp-controller="Wish" asp-route-url="/@item.Name-@item.IdPro" asp-route-id="@item.IdPro"><i class="fa fa-heart"></i></a></li>
+
+                                    </ul>
+                                </div>
+                                break;
+
+                            }
+
+                            <div class="product__item__text">
+                                <h6><a href="/@item.Name-@item.IdPro">@item.Name</a></h6>
+                                @if (item.ProductItems.Count() > 1 && item.ProductItems != null)
+                                {
+                                    var max = item.ProductItems.Max(u => u.ProPrice);
+                                    var min = item.ProductItems.Min(u => u.ProPrice);
+                                    <h5>@min ~ @max VND</h5>
+                                }
+                                else
+                                {
+                                    var max = item.ProductItems.Max(u => u.ProPrice);
+                                    <h5>@max VND</h5>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>
+<!-- Related Product Section End -->
+@section Scripts {
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.4/umd/popper.min.js" integrity="sha512-...[hash]..." crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+
+
+        function updatePrice() {
+            var selectElement = document.getElementById("txtitem");
+            var selectedOption = selectElement.options[selectElement.selectedIndex];
+            var price = selectedOption.getAttribute("data-price");
+            document.getElementById("productPrice").innerText = price + "VND";
+        }
+        $(document).ready(function () {
+
+            $(".content-review").slice(0, 3).show();
+            $("#loadMore").on("click", function (e) {
+                e.preventDefault();
+                $(".content-review:hidden").slice(0, 3).slideDown();
+                if ($(".content-review:hidden").length == 0) {
+                    $("#loadMore").text("No Content").addClass("noContent");
+                }
+            });
+
+
+
+            $(".add-to-cart-btn").click(function () {
+
+                var idProduct = $(this).data("product-id");
+                var quantity = parseInt($("#txtsoluong").val());
+                var idProductItem = $("#txtitem").val();
+                var selectElement = document.getElementById("txtitem");
+                var price = null;
+                if (selectElement.tagName === 'SELECT') {
+                    var selectedOption = selectElement.options[selectElement.selectedIndex];
+                    // Tiếp tục với các xử lý khác ở đây
+                    price = selectedOption.getAttribute("data-price");
+                } else {
+                    var txtitemInput = document.getElementById("txtitem");
+                    price = txtitemInput.getAttribute("data-price")
+                }
+
+
+                $.ajax({
+                    url: "api/cart/add",
+                    type: "POST",
+                    data: { idProduct: idProduct, idProductItem: idProductItem, quantity: quantity, price: price }, // Thay "your-cart-id" bằng id_cart của giỏ hàng
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.success) {
+                            loadHeaderCart();
+                            location.reload();
+
+                        } else {
+
+                            $(".popupgr1").css("display", "block");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+
+                    }
+                });
+            });
+        });
+        var skip = @Model.products.Reviews.Count; // Số lượng review hiện tại đã load
+        var id = @Model.products.IdPro; // Id của sản phẩm
+        var take = 3; // Số lượng review muốn tải thêm mỗi lần
+
+
+        function loadHeaderCart() {
+            //minicart
+            $("#numberCart").load("/AjaxContent/NumberCart");
+        }
+
+
+    </script>
+
+}

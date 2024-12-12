@@ -1,0 +1,444 @@
+@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<App.Model.Product>
+
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    int PageNext = CurrentPage + 1;
+    ViewData["Title"] = "Shop Seller - " + CurrentPage;
+    Layout = "~/views/shared/_layouthome.cshtml";
+    App.Model.ProCateProItemViewModel Product = ViewBag.Product;
+
+    List<App.Model.ProCateProItemViewModel> lsSaleProduct = ViewBag.SaleProduct;
+
+}
+
+@section Style {
+    <script src="https://kit.fontawesome.com/a2cbbc509a.js" crossorigin="anonymous"></script>
+    <link href="/assests/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
+    <link href="/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
+
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="/assests/css/theme.min.css">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M8S4MT3EYG"></script>
+    <style>
+        .bg-secondary {
+            background-color: #EDF1FF !important;
+        }
+
+        a.bg-secondary:hover,
+        a.bg-secondary:focus,
+        button.bg-secondary:hover,
+        button.bg-secondary:focus {
+            background-color: #bac9ff !important;
+        }
+    </style>
+
+}
+
+
+
+<!-- Page Header Start -->
+<!-- Page Header End -->
+<!-- Shop Start -->
+<div class="container">
+    <div class="row px-xl-5">
+        <!-- Shop Sidebar Start -->
+        <div class="col-lg-3 col-md-12">
+            <div class="d-flex flex-column">
+                <div>
+                    @{
+                        string linkimg = "";
+                        string nameshop = "";
+                    }
+
+                    @foreach (var item in Model)
+                    {
+
+
+
+                        linkimg = item.IdAccNavigation.Avt;
+                        nameshop = item.IdAccNavigation.FullName;
+                        break;
+
+                    }
+
+                    <!-- img -->
+                    <!-- img -->
+                    <img src="/images/icons/@linkimg" alt="" class="rounded-circle icon-shape icon-xxl" />
+                </div>
+                <!-- heading -->
+                <div class="mt-4">
+                    <h1 class="mb-1 h4">@nameshop</h1>
+                   
+                    <div>
+                        <span>
+                            <small><a href="#!">100% satisfaction guarantee</a></small>
+                        </span>
+                    </div>
+                    <!-- rating -->
+                    @{
+                        double rating = 0;
+                        int ratingav = 0;
+
+                        foreach(var item in Model)
+                        {
+                            if (item.Reviews.Count() > 0)
+                            {
+                                foreach (var r in item.Reviews)
+                                {
+                                    rating += r.RatingValue;
+                                    ratingav++;
+                                }
+                                
+                            }
+                            
+                        }
+                        rating /=ratingav;
+                    }
+                    <div class="mt-2">
+                        <!-- rating -->
+
+                        
+                        @if (rating == 1)
+                        {
+                           
+                            <small class="text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                            </small>
+                        }
+                        else if (rating > 1 && rating < 2)
+                        {
+                            <small class="text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                            </small>
+
+
+                        }
+                        else if (rating == 2)
+                        {
+                            <small class="text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                            </small>
+
+
+                        }
+                        else if (rating > 2 && rating < 3)
+                        {
+                            <small class="text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                            </small>
+
+
+                        }
+                        else if (rating == 3)
+                        {
+                            <small class="text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                            </small>
+
+
+                        }
+                        else if (rating > 3 && rating < 4)
+                        {
+                            <small class="text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                                <i class="bi bi-star"></i>
+                                
+                            </small>
+
+
+                        }
+                        else if (rating == 4)
+                        {
+                            <small class="text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star"></i>
+
+                            </small>
+
+
+                        }
+                        else if (rating > 4 && rating < 5)
+                        {
+                            <small class="text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+
+                            </small>
+
+
+                        }
+                        else if (rating == 5)
+                        {
+                            <small class="text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+
+                            </small>
+
+
+
+                        }
+                        <span class="ms-2">@rating.ToString("0.0")</span>
+                        <!-- text -->
+                        <span class="text-muted ms-1">(@ratingav reviews)</span>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <!-- Category Start -->
+            <div class="border-bottom mb-4 pb-4">
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <i class="fa fa-bars"></i>
+                        <span>Category</span>
+                    </div>
+                    <ul id="txtCategory">
+                        <li><a asp-action="Filtter" asp-route-id_acc="@ViewBag.IdAcc" asp-route-IdCate="0">All</a></li>
+                        @foreach (var category in ViewBag.lsCate)
+                        {
+                            <li>
+                                <a asp-action="Filtter"
+                                   asp-route-id_acc="@ViewBag.IdAcc" asp-route-IdCate="@category.IdCate">@category.NameCate</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <!-- Category End -->
+            <!-- Price Start -->
+           
+            <!-- Price End -->
+
+
+        </div>
+        <!-- Shop Sidebar End -->
+        <!-- Shop Product Start -->
+        <div class="col-lg-9 col-md-12">
+            <div class="row pb-3 justify-content-center">
+
+                <div class="col-12 pb-1">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+
+                        @* Dùng JS để lấy value của input khi press tag a *@
+
+                        <div class="align-self-center p-8">
+                            <div class="mb-3">
+                                <h5 class="mb-0 fw-bold">@nameshop</h5>
+                                <p class="mb-0 text-muted">Whatever the occasion, we've got you covered.</p>
+                            </div>
+                            <div class="position-relative">
+                                <div class="input-group">
+                                    <input id="searchString" name="searchString" type="text" class="form-control" placeholder="Search by name" value="@TempData["searchString"]">
+                                    <div class="input-group-append">
+                                        <a id="searchButton" asp-controller="ShopSeller" asp-action="FiltterSearch" method="get" asp-route-id_acc="@ViewBag.IdAcc"
+                                           class="input-group-text bg-transparent text-primary">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="py-4">
+                            <!-- img -->
+                            <img src="/assests/images/svg-graphics/store-graphics.svg" alt="" class="img-fluid" />
+                        </div>
+
+
+
+
+
+
+                    </div>
+                    <div class="d-md-flex justify-content-between mb-3 align-items-center">
+                        <div>
+                            <p class="mb-3 mb-md-0">@Model.Count() Products found</p>
+                        </div>
+                        <div class="d-flex justify-content-md-between align-items-center">
+                            
+                            <div>
+                                <!-- select option -->
+                                <select class="form-select">
+                                    <option selected="">Sort by: Featured</option>
+                                    <option value="Low to High">Price: Low to High</option>
+                                    <option value="High to Low">Price: High to Low</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        @if (Model != null && Model.Count() > 0)
+                        {
+                            foreach (var product in Model)
+                            {
+                                string imgproduct = "";
+                                @foreach (var img in product.ImgPros)
+                                {
+                                    imgproduct = img.LinkImg;
+                                    break;
+                                }
+
+                                string url = $"/{product.Name}-{product.IdPro}";
+                                <div class="col-lg-4 col-md-6 col-sm-6">
+                                    <div class="product__item">
+                                        <div class="product__item__pic set-bg" data-setbg="/assests/img/product/@imgproduct">
+                                            <ul class="product__item__pic__hover">
+                                                <li>
+                                                    <a asp-action="Create" asp-controller="Wish" asp-route-url="Product" asp-route-id="@product.IdPro"><i class="fa fa-heart"></i></a>
+
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                        <div class="product__item__text">
+                                            <h6><a href="@url">@product.Name</a></h6>
+                                            @if (product.ProductItems.Count() > 1 && product.ProductItems != null)
+                                            {
+                                                var max = product.ProductItems.Max(u => u.ProPrice);
+                                                var min = product.ProductItems.Min(u => u.ProPrice);
+                                                <h5>@min ~ @max VND</h5>
+                                            }
+                                            else
+                                            {
+                                                var max = product.ProductItems.Max(u => u.ProPrice);
+                                                <h5>@max VND</h5>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+
+
+                        }
+                    </div>
+                </div>
+
+
+
+                <!-- Phân trang -->
+                <div aria-label="pagination-area pt-10">
+                    <ul class="pagination justify-content-center">
+                        <pager class="pager-container" options="@PagedListRenderOptions.Bootstrap4PageNumbersPlusPrevAndNext"
+                               list="@Model" asp-area="" asp-route-id_acc="@ViewBag.IdAcc" asp-controller="ShopSeller"
+                               asp-action="Index" />
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <!-- Shop Product End -->
+
+    </div>
+</div>
+<!-- Shop End -->
+@section Scripts {
+    <script>
+        
+        @* $(document).ready(function(){
+        jQuery("#txtCategory").change(function(){
+        var idCate = jQuery(this).children(":selected").attr("value");
+        $('#txtCategory option').removeAttr('selected');
+        $("#txtCategory > [value="+ idCate + "]").attr("selected", true);
+
+        $.ajax({
+        url: '/ShopSeller/Filtter',
+        dataType: "json",
+        type: "GET",
+        data: {
+        IdCate: idCate,
+        id_acc: @ViewBag.IdAcc
+        },
+        async: true,
+        success: function(results) {
+        if (results.status == "success") {
+        window.location.href = results.redirectUrl;
+        }
+        },
+        error: function(xhr){
+        alert('error')
+        }
+        })
+        })
+        }) *@
+            $(document).ready(function () {
+                $('input[name="price-filter"]').change(function () {
+                    var selectedPrice = $('input[name="price-filter"]:checked').val();
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '/ShopSeller/FiltterPrice',
+                        data: { price: selectedPrice },
+                        success: function (results) {
+                            if (results.status == "success") {
+                                window.location.href = results.redirectUrl;
+                            }
+                        },
+                        error: function (xhr) {
+                            alert('error')
+                        }
+                    });
+                });
+            });
+
+        document.getElementById('searchButton').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent default action of the anchor tag
+
+            var searchString = document.getElementById('searchString').value;
+
+            // Do whatever you want with the searchString, for example, send it to the server
+            // You can use AJAX or submit the form, depending on your application's requirements
+            // For simplicity, let's assume you want to redirect to a URL with the search string as a query parameter
+            var idAcc = '@ViewBag.IdAcc'; // Assuming this value is already populated in your Razor view
+
+            window.location.href = '/ShopSeller/FiltterSearch?id_acc=' + encodeURIComponent(idAcc) + '&searchString=' + encodeURIComponent(searchString);
+        });
+
+
+    </script>
+    <script src="/assests/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assests/libs/simplebar/dist/simplebar.min.js"></script>
+
+    <!-- Theme JS -->
+    <script src="/assests/js/theme.min.js"></script>
+}
+
+
+
+

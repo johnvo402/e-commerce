@@ -1,0 +1,54 @@
+﻿@*
+For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+	<ul class="nav">
+
+
+		<li class="nav-item">
+			<a class="nav-link" asp-area="Seller" asp-controller="Revenues" asp-action="Index">
+				<span class="menu-title">Revenue</span>
+				<i class="mdi mdi-home menu-icon"></i>
+			</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" data-bs-toggle="collapse" href="#li-orders" aria-expanded="false"
+				aria-controls="ui-basic">
+				<span class="menu-title">Order Manage</span>
+				<i class="menu-arrow"></i>
+				<i class="mdi mdi-crosshairs-gps menu-icon"></i>
+			</a>
+			<div class="collapse" id="li-orders">
+				<ul class="nav flex-column sub-menu">
+					<li class="nav-item"> <a class="nav-link" asp-area="Seller" asp-controller="Orders"
+							asp-action="Index">All Order</a></li>
+					<li class="nav-item"> <a class="nav-link" asp-area="Seller" asp-controller="Orders"
+							asp-action="ListOrderCanceled">Canceled</a></li>
+				</ul>
+			</div>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" data-bs-toggle="collapse" href="#li-products" aria-expanded="false"
+				aria-controls="ui-basic">
+				<span class="menu-title">Product Manage</span>
+				<i class="menu-arrow"></i>
+				<i class="mdi mdi-contacts menu-icon"></i>
+			</a>
+			<div class="collapse" id="li-products">
+				<ul class="nav flex-column sub-menu">
+					<li class="nav-item"> <a class="nav-link" asp-area="Seller" asp-controller="Products"
+							asp-action="Index">All Products</a></li>
+					<li class="nav-item"> <a class="nav-link" asp-area="Seller" asp-controller="Products"
+							asp-action="Create">Add New Product</a></li>
+				</ul>
+			</div>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" asp-action="Index" asp-controller="Wallet" aria-expanded="false"
+				aria-controls="general-pages">
+				<span class="menu-title">Wallet</span>
+				<i class="mdi mdi-bank menu-icon"></i>
+			</a>
+		</li>
+	</ul>
+</nav>

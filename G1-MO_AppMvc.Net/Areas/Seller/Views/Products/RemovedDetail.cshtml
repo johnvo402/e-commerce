@@ -1,0 +1,30 @@
+@model App.Model.ProductItem
+@{
+    ViewData["Title"] = "RemovedDetail";
+}
+<h1>Create Items</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <a class="btn btn-primary" asp-action="Index">Back to list</a>
+        <hr />
+        <form asp-action="DeleteItems" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdPro">
+            <input type="hidden" asp-for="IdProItem">
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" readonly />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProPrice" class="control-label"></label>
+                <input asp-for="ProPrice" class="form-control" readonly />
+                <span asp-validation-for="ProPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Delete" class="btn btn-danger" />
+            </div>
+        </form>
+    </div>
+</div>

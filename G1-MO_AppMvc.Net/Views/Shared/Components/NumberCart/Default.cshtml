@@ -1,0 +1,19 @@
+﻿@model List<App.Model.ShoppingCartItem>
+@{
+    int num = 0;
+}
+@if(Model != null && Model.Count()>0)
+{
+   
+    foreach (var item in Model)
+    {
+        num += item.Quantity;
+    }
+    //href # gì đó nếu muốn di chuyển đến tài nguyên khác
+    <a href="/cart"><i class="fa fa-shopping-bag"></i> <span>@num</span></a>
+}
+else
+{
+    <a href="/cart"><i class="fa fa-shopping-bag"></i> <span>0</span></a>
+}
+ 

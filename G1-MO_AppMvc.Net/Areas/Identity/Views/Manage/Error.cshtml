@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var roles = await UserManager.GetRolesAsync(user);
+}
+
+@if (roles.Contains("Administrator"))
+{
+    Layout = "Admin/_AdminLayout";
+}
+else
+{
+    Layout = "_LayoutHome";
+}
+@{
+    ViewData["Title"] = "Error";
+}
+
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+    <p>
+        Unable to complete the task due to an error.
+    </p>
+</div>

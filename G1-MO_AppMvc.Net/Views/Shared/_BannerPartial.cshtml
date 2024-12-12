@@ -1,0 +1,38 @@
+﻿<div id="bannerContainer">
+    
+</div>
+
+@section Script {
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.7/signalr.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var connection = new signalR.HubConnectionBuilder().withUrl("/bannerHub").build();
+
+            connection.start().then(function () {
+                // Khi kết nối thành công, gửi yêu cầu để lấy dòng đầu tiên của banner
+                connection.invoke("GetFirstBanner").catch(function (err) {
+                    console.error(err.toString());
+                });
+            }).catch(function (err) {
+                console.error(err.toString());
+            });
+
+            // Nhận đường dẫn hình ảnh từ máy chủ và hiển thị nó
+            connection.on("ReceiveFirstBanner", function (imageUrl) {
+                // Xử lý đường dẫn hình ảnh nhận được và hiển thị nó trong #bannerContainer
+                $('#bannerContainer').append('<div class="hero__item set-bg" data-setbg="assests/img/hero/' + imageUrl + '">' +=
+                    '< div class= "hero__text" >' +=
+                    '<span>FRUIT FRESH < /span>' +=
+                    '< h2 > Vegetable < br /> 100 % Organic < /h2>' +=
+                    '< p > Free Pickup and Delivery Available < /p>' +=
+
+                    '< /div>' +=
+                '< /div>');
+            });
+        });
+
+    </script>
+}

@@ -1,0 +1,50 @@
+﻿@*
+For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<App.Model.ImgPro>
+
+
+<div class="row">
+	<div class="col-md-12">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th class="col-md-4">IMG</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>
+							<img src="/assests/img/product/@item.LinkImg" alt="Product IMG"
+								class="img-fluid rounded mx-auto d-block" style="max-height: 200px;" />
+						</td>
+						<td>
+							<a asp-action="DeleteIMG" asp-route-id="@item.IdImg" class="btn btn-primary">Delete</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<br />
+<br />
+<br />
+<br />
+<form method="post" enctype="multipart/form-data">
+	<div class="form-group">
+		<label class="control-label">Add more image</label>
+		<div class="custom-file">
+			<input type="file" class="custom-file-input" id="file" name="file">
+		</div>
+	</div>
+	<br />
+	<button class="btn btn-danger" asp-area="Seller" asp-controller="Products" asp-action="AddMoreImg" type="submit"
+		asp-route-id="@ViewBag.IDPro">Submit</button>
+</form>

@@ -1,0 +1,39 @@
+﻿@model DisplayRecoveryCodesViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var roles = await UserManager.GetRolesAsync(user);
+}
+
+@if (roles.Contains("Administrator"))
+{
+    Layout = "Admin/_AdminLayout";
+}
+else
+{
+    Layout = "_LayoutHome";
+}
+@{
+    ViewData["Title"] = "Recovery Codes";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"].</h1>
+    <p class="text-success">@ViewData["StatusMessage"]</p>
+
+    <div>
+        <h4>Here are your recovery codes</h4>
+        <p>Store these codes securely in case you need to authenticate with two-factor authentication.</p>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>Codes:</dt>
+            @foreach (var code in Model.Codes)
+            {
+                <dd>
+                    <text>@code</text>
+                </dd>
+            }
+        </dl>
+    </div>
+</div>

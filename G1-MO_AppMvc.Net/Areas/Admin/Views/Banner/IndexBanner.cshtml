@@ -1,0 +1,31 @@
+﻿@model App.Models.Banner
+@{
+    ViewData["Title"] = "Banner Management";
+    Layout = "Admin/_AdminLayout";
+}
+
+<div class="container">
+    @if (Model != null)
+    {
+       
+        <div class="row">
+            <div class="col-md-6">
+                <label asp-for="Link" class="control-label"></label>
+                <img src="~/assests/img/hero/@Model.Link" class="img-fluid" alt="Responsive image">
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Text" class="control-label"></label>
+                <input asp-for="Text" class="form-control" disabled />
+                <a class="btn btn-dark btn-rounded" asp-action="UploadImg">Change banner</a>
+            </div>
+        </div>
+
+    } else
+    {
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-dark btn-rounded" asp-action="UploadImg">Up banner</a>
+        </div>
+      
+    }
+   
+</div>

@@ -1,0 +1,33 @@
+﻿@model App.Areas.Identity.Controllers.ManageController.UploadFile
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var roles = await UserManager.GetRolesAsync(user);
+}
+
+@if (roles.Contains("Administrator"))
+{
+    Layout = "Admin/_AdminLayout";
+}
+else
+{
+    Layout = "_LayoutHome";
+}
+@{
+    ViewData["Title"] = "User Profile";
+}
+<div class="container">
+    <h1>Upload</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="form-label" asp-for="@Model.FileUp"></label>
+            <input class="form-control" asp-for="@Model.FileUp" />
+            <span class="text-danger" asp-validation-for="FileUp"></span>
+        </div>
+       
+        <button type="submit" class="btn btn-success" asp-action="UploadImg">Up Img</button>
+    </form>
+</div>
+

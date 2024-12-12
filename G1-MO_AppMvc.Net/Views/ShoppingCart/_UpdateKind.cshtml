@@ -1,0 +1,44 @@
+﻿@model App.Model.UpdateCart
+
+<form asp-action="UpdateKind" asp-controller="ShoppingCart">
+    <div class="row">
+        <div class="col-md-6">
+            <div>
+                <input type="hidden" name="idcartitem" value="@Model.ShoppingCartItem.IdCartItem" />
+                <label for="txtitem" class="form-label">Select Kind:</label>
+                <select id="txtitem" name="newitem" class="form-select m-3" onchange="updatePrice()">
+                    @foreach (var item in Model.proitem)
+                    {
+                        if (Model.ShoppingCartItem.IdProItem == item.IdProItem)
+                        {
+                            <option selected data-price="@item.ProPrice" value="@item.IdProItem">@item.Name</option>
+                        }
+                        else
+                        {
+                            <option data-price="@item.ProPrice" value="@item.IdProItem">@item.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            
+            <button type="submit" class="btn btn-rounded btn-success">Confirm</button>
+        </div>
+        <div class="col-md-6">
+           
+            <div>
+                <label for="productPrice" class="form-label">Price:</label>
+                <h5 id="productPrice" style="color: red;" class="me-2 d-inline">@Model.ShoppingCartItem.Price VND</h5>
+            </div>
+            <label for="quantity" class="form-label">Quantity:</label>
+            <input name="newquantity" type="number" id="quantity" class="form-control form-control-sm" value="@Model.ShoppingCartItem.Quantity" min="1" />
+            
+        </div>
+    </div>
+</form>
+
+
+
+
+
+
+

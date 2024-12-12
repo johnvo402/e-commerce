@@ -1,0 +1,233 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
+@model App.Model.Wallet
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var roles = await UserManager.GetRolesAsync(user);
+}
+@{
+    // Dictionary để ánh xạ giá trị ngân hàng với tên ngân hàng
+    var bankNames = new Dictionary<string, string>
+    {
+        { "ICB", "VietinBank" },
+        { "VCB", "Vietcombank" },
+        { "BIDV", "BIDV" },
+        { "VBA", "Agribank" },
+        { "OCB", "OCB" },
+        { "MB", "MBBank" },
+        { "TCB", "Techcombank" },
+        { "ACB", "ACB" },
+        { "VPB", "VPBank" },
+        { "TPB", "TPBank" },
+        { "STB", "Sacombank" },
+        { "HDB", "HDBank" },
+        { "VCCB", "VietCapitalBank" },
+        { "SCB", "SCB" },
+        { "VIB", "VIB" },
+        { "SHB", "SHB" },
+        { "EIB", "Eximbank" },
+        { "MSB", "MSB" },
+        { "CAKE", "CAKE" },
+        { "Ubank", "Ubank" },
+        { "TIMO", "Timo" },
+        { "VTLMONEY", "ViettelMoney" },
+        { "VNPTMONEY", "VNPTMoney" },
+        { "SGICB", "SaigonBank" },
+        { "BAB", "BacABank" },
+        { "PVCB", "PVcomBank" },
+        { "Oceanbank", "Oceanbank" },
+        { "NCB", "NCB" },
+        { "SHBVN", "ShinhanBank" },
+        { "ABB", "ABBANK" },
+        { "VAB", "VietABank" },
+        { "NAB", "NamABank" },
+        { "PGB", "PGBank" },
+        { "VIETBANK", "VietBank" },
+        { "BVB", "BaoVietBank" },
+        { "SEAB", "SeABank" },
+        { "COOPBANK", "COOPBANK" },
+        { "LPB", "LienVietPostBank" },
+        { "KLB", "KienLongBank" },
+        { "KBank", "KBank" },
+        { "KBHN", "KookminHN" },
+        { "KEBHANAHCM", "KEBHanaHCM" },
+        { "KEBHANAHN", "KEBHANAHN" },
+        { "MAFC", "MAFC" },
+        { "CITIBANK", "Citibank" },
+        { "KBHCM", "KookminHCM" },
+        { "VBSP", "VBSP" },
+        { "WVN", "Woori" },
+        { "VRB", "VRB" },
+        { "UOB", "UnitedOverseas" },
+        { "SCVN", "StandardChartered" },
+        { "PBVN", "PublicBank" },
+        { "NHB HN", "Nonghyup" },
+        { "IVB", "IndovinaBank" },
+        { "IBK - HCM", "IBKHCM" },
+        { "IBK - HN", "IBKHN" },
+        { "HSBC", "HSBC" },
+        { "HLBVN", "HongLeong" },
+        { "GPB", "GPBank" },
+        { "DOB", "DongABank" },
+        { "DBS", "DBSBank" },
+        { "CIMB", "CIMB" },
+        { "CBB", "CBBank" }
+    };
+    string bankName = "";
+    // Tìm tên ngân hàng tương ứng với giá trị ngân hàng
+    if (Model.NameBank != null)
+    {
+         bankName = bankNames.ContainsKey(Model.NameBank) ? bankNames[Model.NameBank] : "";
+    }
+    
+}
+
+@if (roles.Contains("Seller"))
+{
+    Layout = "Seller/_SellerLayout";
+}
+else
+{
+    Layout = "_LayoutHome";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    Wallet
+                </div>
+                <span asp-validation-for="Request" class="text-danger"></span>
+                <div class="card-body">
+                    <p><strong>Balance:</strong> <span id="balance" class="text-danger">@Model.Balance</span>VND</p>
+                    <p><strong>Bank Infomation:</strong></p>
+                    <ul class="list-unstyled">
+                       
+
+                        <li><strong>Bank:</strong> <span id="bankName">@bankName</span></li>
+                        <li><strong>Number Card:</strong> <span id="accountNumber">@Model.NumberCard</span></li>
+                        <li><strong>Owner Card:</strong> <span id="accountHolder">@Model.NameCard</span></li>
+                    </ul>
+
+                    <div class="text-center">
+                        <button class="btn btn-primary mr-2" onclick="editAccount()">Change Bank</button>
+                        <button class="btn btn-danger" onclick="withdrawMoney()">WithDraw</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (Model.Status == 2)
+    {
+        <div class="row justify-content-center">
+        <div class="col-md-8">
+           
+            <h5><strong>You have request withdraw:</strong> <span id="balance" class="text-danger">@Model.Request</span>VND</h5>
+            <a class="btn btn-rounded btn-danger" asp-action="Cancel" asp-route-id="@Model.IdWallet">Cancel</a>
+        </div>
+        </div>
+    }
+</div>
+<div class="modal fade" id="editAccountModal" tabindex="-1" aria-labelledby="editAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editAccountModalLabel">Change Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="editAccount" asp-controller="Wallet" asp-action="EditAccount">
+                    <label for="bankNameSelect" class="form-label">Bank:</label>
+                    <select class="form-select" id="bankNameSelect" asp-for="NameBank">
+                        <option value="ICB">VietinBank</option>
+                        <option value="VCB">Vietcombank</option>
+                        <option value="BIDV">BIDV</option>
+                        <option value="VBA">Agribank</option>
+                        <option value="OCB">OCB</option>
+                        <option value="MB">MBBank</option>
+                        <option value="TCB">Techcombank</option>
+                        <option value="ACB">ACB</option>
+                        <option value="VPB">VPBank</option>
+                        <option value="TPB">TPBank</option>
+                        <option value="STB">Sacombank</option>
+                        <option value="HDB">HDBank</option>
+                        <option value="VCCB">VietCapitalBank</option>
+                        <option value="SCB">SCB</option>
+                    </select>
+                    <div class="mb-3">
+                        <label for="accountNumberInput" class="form-label">Number Card:</label>
+                        <input asp-for="NumberCard" type="text" class="form-control" id="accountNumberInput" placeholder="Input Number Card!">
+                    </div>
+                    <div class="mb-3">
+                        <label for="accountHolderInput" class="form-label">Owner Card:</label>
+                        <input asp-for="NameCard" type="text" class="form-control" id="accountHolderInput" placeholder="Input Name Owner Card!">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="editAccount" class="btn btn-primary">Save change</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="withdrawMoneyModal" tabindex="-1" aria-labelledby="withdrawMoneyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="withdrawMoneyModalLabel">Rút tiền</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="withdrawform" asp-action="Withdraw">
+                    <div class="mb-3">
+                        <label for="withdrawAmountInput" class="form-label">Amount you want to withdraw:</label>
+                        <input asp-for="Request" min="1" type="number" class="form-control" id="withdrawAmountInput" placeholder="Input amount you want to withdraw">
+                       
+                        <p class="small-text opacity-25 text-dark">Note: You will lose 5% service fee!</p>
+                    </div>
+                </form>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="withdrawform" class="btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        // Function to edit account information
+        function editAccount() {
+            $('#editAccountModal').modal('show');
+        }
+        function withdrawMoney() {
+            $('#withdrawMoneyModal').modal('show');
+        }
+
+        // Function to withdraw money
+        function withdraw() {
+            var currentBalance = parseFloat(document.getElementById("balance").innerText);
+            var withdrawalAmount = parseFloat(prompt("Nhập số tiền bạn muốn rút:"));
+
+            if (!isNaN(withdrawalAmount)) {
+                if (withdrawalAmount <= currentBalance) {
+                    var newBalance = currentBalance - withdrawalAmount;
+                    document.getElementById("balance").innerText = newBalance.toFixed(2);
+                    alert("Rút tiền thành công!");
+                } else {
+                    alert("Số tiền rút vượt quá số dư hiện tại!");
+                }
+            } else {
+                alert("Vui lòng nhập số tiền hợp lệ!");
+            }
+        }
+    </script>
+}

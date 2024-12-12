@@ -1,0 +1,71 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using App.Models
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+
+    var user = await UserManager.GetUserAsync(User);
+    var roles = await UserManager.GetRolesAsync(user);
+
+    <div class="header__top__right__language">
+        <img style="max-width:32px;" src="images/icons/@user.Avt" alt="">
+
+        <div class="header__top__right__auth">
+            <a class="nav-link text-dark" asp-area="Identity" asp-controller="Manage" asp-action="Index" title="Manage">@UserManager.GetUserName(User)</a>
+        </div>
+        
+        <ul>
+            <li><a asp-area="Identity" asp-controller="Manage" asp-action="Index" title="Manage">Profile</a></li>
+            
+
+
+
+
+
+            @if (roles.Contains("Seller"))
+            {
+                <li>
+                    <div class="header__top__right__auth">
+                        <a class="nav-link" asp-area="Seller" asp-controller="Products" asp-action="Index">My shop</a>
+                    </div>
+                </li>
+            }
+            <li>
+                <div class="header__top__right__auth">
+                    <a class="nav-link" asp-action="Index" asp-controller="Wallet">Wallet</a>
+                </div>
+            </li>
+            <li>
+                <div class="header__top__right__auth">
+                    <a class="nav-link" asp-controller="UserOrder" asp-action="Index">My order</a>
+                </div>
+            </li>
+            <li>
+                <div class="header__top__right__auth">
+                    <form asp-area="Identity" asp-controller="Account" asp-action="LogOff" method="Post" id="logoutForm" class="navbar-right">
+                        <button type="submit" class="btn-default btn text-white">Sign out</button>
+                    </form>
+                </div>
+            </li>
+           
+        </ul>
+    </div>
+
+
+}
+else
+{
+
+
+    <div class="header__top__right__auth">
+        <a class="nav-link text-dark" asp-action="Register" asp-controller="Account" asp-area="Identity">Sign Up</a>
+    </div>
+    <div class="header__top__right__auth">
+        <a class="nav-link text-dark" asp-area="Identity" asp-controller="Account" asp-action="Login">Sign In</a>
+    </div>
+
+}

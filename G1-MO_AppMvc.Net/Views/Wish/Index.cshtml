@@ -1,0 +1,119 @@
+﻿@model List<App.Model.Wishlist>
+
+@section Style {
+    <script src="https://kit.fontawesome.com/a2cbbc509a.js" crossorigin="anonymous"></script>
+    <link href="/assests/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="/assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
+    <link href="/assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
+
+
+    <!-- Theme CSS -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M8S4MT3EYG"></script>
+    <style>
+        h1, h2, h3, h4, h5, h6 {
+            margin: 0;
+            color: #111111;
+            font-weight: 400;
+            font-family: "Cairo", sans-serif;
+        }
+
+        .table-image td, th {
+            vertical-align: middle;
+        }
+
+    </style>
+}
+
+<div class="container">
+    @if (Model.Count() > 0)
+    {
+        <!-- row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="mb-8">
+                    <!-- heading -->
+                    <h1 class="mb-1">My Wishlist</h1>
+
+                </div>
+                <div>
+                    <!-- table -->
+                    <div class="table-responsive">
+                        <table class="table text-nowrap table-with-checkbox table-image">
+                            <thead class="table-light">
+                                <tr>
+
+                                    <th></th>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+                                    string linkimg = "";
+                                    string url = $"/{item.IdProNavigation.Name}-{item.IdPro}";
+                                    @foreach (var img in item.IdProNavigation.ImgPros)
+                                    {
+                                        linkimg = img.LinkImg;
+                                        break;
+                                    }
+                                    <tr>
+
+                                        <td class="w-25">
+                                            <img src="/assests/img/product/@linkimg" alt="" />
+                                        </td>
+                                        <td class="align-middle">
+                                            <div class="product__discount__item__text">
+                                                <h5 class="fs-6 mb-0"><a href="@url" class="text-inherit">@item.IdProNavigation.Name</a></h5>
+                                            </div>
+
+                                        </td>
+                                        @if (item.IdProNavigation.ProductItems.Count() > 1 && item.IdProNavigation.ProductItems != null)
+                                        {
+                                            var max = item.IdProNavigation.ProductItems.Max(u => u.ProPrice);
+                                            var min = item.IdProNavigation.ProductItems.Min(u => u.ProPrice);
+                                            <td class="align-middle">@min ~ @max</td>
+                                        }
+                                        else
+                                        {
+                                            var max = item.IdProNavigation.ProductItems.Max(u => u.ProPrice);
+                                            <td class="align-middle">@max</td>
+                                        }
+
+                                        <td class="align-middle"><span class="badge bg-success">In Stock</span></td>
+
+                                        <td class="align-middle">
+                                            <a asp-action="Remove" asp-controller="Wish" asp-route-id="@item.IdWishlist" class="text-muted" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                                                <i class="fa-regular fa-trash-can"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    } else
+    {
+        <div class="mb-8">
+            <!-- heading -->
+            <h1 class="mb-1">No Wishlist</h1>
+
+        </div>
+    }
+
+</div>
+@section Scripts {
+    <script src="/assests/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assests/libs/simplebar/dist/simplebar.min.js"></script>
+
+    <!-- Theme JS -->
+    <script src="/assests/js/theme.min.js"></script>
+}

@@ -1,0 +1,151 @@
+﻿@model App.Models.AppUser
+@using App.Model
+@{
+	float total = 0;
+	float discount = 0;
+}
+
+@section Style {
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+	<!-- fontawesome -->
+	<link rel="stylesheet" href="~/assetss/css/all.min.css">
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="~/assetss/bootstrap/css/bootstrap.min.css">
+	<!-- owl carousel -->
+	<link rel="stylesheet" href="~/assetss/css/owl.carousel.css">
+	<!-- magnific popup -->
+	<link rel="stylesheet" href="~/assetss/css/magnific-popup.css">
+	<!-- animate css -->
+	<link rel="stylesheet" href="~/assetss/css/animate.css">
+	<!-- mean menu css -->
+	<link rel="stylesheet" href="~/assetss/css/meanmenu.min.css">
+	<!-- main style -->
+	<link rel="stylesheet" href="~/assetss/css/main.css">
+	<!-- responsive -->
+	<link rel="stylesheet" href="~/assetss/css/responsive.css">
+
+}
+
+
+<div class="checkout-section mt-150 mb-150">
+
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8">
+				<div class="checkout-accordion-wrap">
+					<div class="accordion" id="accordionExample">
+						<div class="card single-accordion">
+							<div class="card-header" id="headingOne">
+								<h5 class="mb-0">
+									<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+										Billing Address
+									</button>
+								</h5>
+							</div>
+
+							<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+								<div class="card-body" style="padding-bottom:50px;">
+									<div class="billing-address-form">
+										<form id="infoform" asp-action="CheckoutShipCod">
+											<input type="hidden" asp-for="UserName" />
+											<p><input type="text" asp-for="FullName" placeholder="Name"></p>
+											<p><input type="email" asp-for="Email" placeholder="Email"></p>
+											<p><input type="text" asp-for="HomeAdress" placeholder="Address"></p>
+											<p><input type="tel" asp-for="PhoneNumber" placeholder="Phone"></p>
+											<select name="methodPayment">
+												<option value="1">COD</option>
+												<option value="2">VNPAY</option>
+											</select>
+											<br />
+											<br />
+											
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+
+			<div class="col-lg-4">
+				<div class="order-details-wrap">
+					<table class="order-details">
+						<thead>
+							<tr>
+								<th>Product</th>
+								<th>Kind</th>
+								<th>Quantity</th>
+								<th>Total</th>
+
+							</tr>
+						</thead>
+						<tbody class="order-details-body">
+
+
+							@foreach (var cart in (List<ShoppingCartItem>)ViewData["Cart"])
+							{
+								<tr>
+									<td>@cart.IdProNavigation.Name</td>
+									<td>@cart.IdProItemNavigation.Name</td>
+									<td>@cart.Quantity</td>
+									@{
+										var amount = cart.Price * cart.Quantity;
+										total += (float)amount;
+									}
+									<td>@amount VND</td>
+								</tr>
+							}
+
+
+
+
+						</tbody>
+						<tbody class="checkout-details">
+							<tr>
+								<td>Total</td>
+								<td>@total VND</td>
+							</tr>
+							<tr>
+								<td>Discount</td>
+								@{
+									
+									
+										discount = (float)ViewBag.DiscountVoucher;
+									
+								}
+								<td>@discount VND</td>
+							</tr>
+							<tr>
+								<td>Have to pay</td>
+
+								@{
+									
+										total = total - (float)ViewBag.DiscountVoucher;
+									
+								}
+								<td>@total VND</td>
+							</tr>
+						</tbody>
+					</table>
+					<button type="submit" form="infoform" class="border-0 bg-white mt-5 ">
+						<a class="boxed-btn mt-lg-4" id="btn-submit">Place Orde</a>
+					</button>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+@section Scripts {
+	<script>
+		window.onload = function () {
+			$("#numberCart").load("/AjaxContent/NumberCart");
+			$("#numberWish").load("/AjaxContent/HeaderCart");
+		};
+	</script>
+
+}

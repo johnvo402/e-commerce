@@ -1,0 +1,435 @@
+@using PagedList.Core.Mvc
+@using PagedList
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<App.Model.Voucher>
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "List Voucher" + "-" + CurrentPage;
+     Layout = "Admin/_AdminLayout";
+}
+
+
+@section Style {
+   
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <script src="https://kit.fontawesome.com/a2cbbc509a.js" crossorigin="anonymous"></script>
+  
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <script language="JavaScript" src="https://code.jquery.com/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script language="JavaScript" src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"
+        type="text/javascript"></script>
+    <script language="JavaScript"
+        src="https://cdn.datatables.net/plug-ins/3cfcc339e89/integration/bootstrap/3/dataTables.bootstrap.js"
+        type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css"
+        href="http://cdn.datatables.net/plug-ins/3cfcc339e89/integration/bootstrap/3/dataTables.bootstrap.css">
+
+    <style>
+        .pagination>li {
+            display: inline;
+            padding: 0px !important;
+            margin: 0px !important;
+            border: none !important;
+        }
+
+        .modal-backdrop {
+            z-index: -1 !important;
+        }
+
+        /*
+Fix to show in full screen demo
+*/
+        iframe {
+            height: 700px !important;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 6px 12px !important;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            touch-action: manipulation;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-image: none;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            color: #fff !important;
+            background: #428bca !important;
+            border-color: #357ebd !important;
+            box-shadow: none !important;
+        }
+
+        .btn-danger {
+            color: #fff !important;
+            background: #d9534f !important;
+            border-color: #d9534f !important;
+            box-shadow: none !important;
+        }
+
+        .badge-success {
+            background-color: #28a745;
+            /* Màu xanh lá cây */
+        }
+
+        @*.badge-danger{background-color:#dc3545;/*Màuđỏ*/}*@
+    </style>
+
+}
+
+
+    
+
+
+
+<body>
+
+   
+
+    <div class="container-fluid">
+          <div class="row">
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-danger card-img-holder text-white">
+                <div class="card-body">
+                    <img src="~/AdminAssets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">
+                        Total Voucher <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+                    </h4>
+                    <h2 class="mb-5">@ViewBag.Voucher</h2>
+                   
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-info card-img-holder text-white">
+                <div class="card-body">
+                    <img src="~/AdminAssets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">
+                        Voucher Used <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+                    </h4>
+                    <h2 class="mb-5">@ViewBag.Voucheruse</h2>
+                   
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-success card-img-holder text-white">
+                <div class="card-body">
+                    <img src="~/AdminAssets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">
+                        Voucher Deleted <i class="mdi mdi-diamond mdi-24px float-right"></i>
+                    </h4>
+                    <h2 class="mb-5">@ViewBag.Voucherdelete</h2>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="temp01 text-center">Voucher Management</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <a class="btn btn-success" asp-action="Create"><i class="fa fa-plus"
+                                        aria-hidden="true"></i>
+                                    Create new voucher</a>
+                            </div>
+                            <div class="col-md-4 text-right">
+                                @* <div class="input-affix m-v-10">
+                                <i class="prefix-icon anticon anticon-search opacity-04"></i>
+                                <input id="keyword" name="keyword" type="text" class="form-control"
+                                placeholder="Search">
+                                </div> *@
+                                <form asp-controller="Voucher" asp-action="Index" method="get">
+                                    <div class="row">
+                                        <div class="col-lg-8" style="padding-right: 0;">
+                                            <input type="text" name="SearchString" value="@TempData["searchString"]"
+                                                class="form-control" placeholder="Enter keywords to search for" />
+                                        </div>
+                                        <div class="col-lg-4" style="padding-left: 0">
+                                            <button type="submit" class="btn btn-primary">Search</button>
+                                        </div>
+                                    </div>
+                                    <div style="clear: both"></div>
+                                </form>
+
+
+
+                            </div>
+
+                        </div>
+
+                        <br>
+
+                        @* <div class="d-md-flex">
+                        <div class="m-b-10">
+                        <select id="idrole2" name="idrole2" style="min-width: 200px;">
+                        <option value="" disabled selected>Usage Status</option>
+                        @foreach (var item in @ViewBag.lsTrangThai)
+                        {
+                        <option value="@item.Value">@item.Text</option>
+                        }
+                        </select>
+                        </div>
+                        </div> *@
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table id="datatable" class="table table-striped table-bordered" cellspacing="0"
+                                    width="100%">
+                                    <!-- Table headers -->
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: center;">
+                                                @{
+                                                    var sortBy = Context.Request.Query["sortBy"] == "ID" ? "ID_Descending" :
+                                                    "ID";
+                                                }
+                                                <a onclick="changeIcon(this)"
+                                                style="text-decoration: none; color: black;"
+                                                    href="@Url.Action("Index", "Voucher", new { sortBy = sortBy, SearchString = @Context.Request.Query["SearchString"] })">
+                                                    ID
+                                                </a>
+                                            </th>
+                                            <th  style="text-align: center;">
+                                                @{
+                                                    sortBy = Context.Request.Query["sortBy"] == "PromotionCode" ?
+                                                    "PromotionCode_Descending" :
+                                                    "PromotionCode";
+                                                }
+                                                <a
+                                                style="text-decoration: none; color: black;"
+                                                    href="@Url.Action("Index", "Voucher", new { sortBy = sortBy, SearchString = @Context.Request.Query["SearchString"] })">
+                                                    PromotionCode
+                                                </a>
+                                            </th>
+                                            <th  style="text-align: center;">
+                                                @{
+                                                    sortBy = Context.Request.Query["sortBy"] == "PromotionName" ?
+                                                    "PromotionName_Descending" :
+                                                    "PromotionName";
+                                                }
+                                                <a
+                                                style="text-decoration: none; color: black;"
+                                                    href="@Url.Action("Index", "Voucher", new { sortBy = sortBy, SearchString = @Context.Request.Query["SearchString"] })">
+                                                    PromotionName
+                                                </a>
+                                            </th>
+                                            <th  style="text-align: center;">
+                                                @{
+                                                    sortBy = Context.Request.Query["sortBy"] == "DiscountAmount" ?
+                                                    "DiscountAmount_Descending" :
+                                                    "DiscountAmount";
+                                                }
+                                                <a
+                                                style="text-decoration: none; color: black;"
+                                                    href="@Url.Action("Index", "Voucher", new { sortBy = sortBy, SearchString = @Context.Request.Query["SearchString"] })">
+                                                    DiscountAmount
+                                                </a>
+                                            </th>
+                                            <th  style="text-align: center;">
+                                                @{
+                                                    sortBy = Context.Request.Query["sortBy"] == "MaxValue" ?
+                                                    "MaxValue_Descending" :
+                                                    "MaxValue";
+                                                }
+                                                <a
+                                                style="text-decoration: none; color: black;"
+                                                    href="@Url.Action("Index", "Voucher", new { sortBy = sortBy, SearchString = @Context.Request.Query["SearchString"] })">
+                                                    MaxValue
+                                                </a>
+                                            </th>
+                                            <th  style="text-align: center;">
+                                                @{
+                                                    sortBy = Context.Request.Query["sortBy"] == "MinValue" ?
+                                                    "MinValue_Descending" :
+                                                    "MinValue";
+                                                }
+                                                <a
+                                                    style="text-decoration: none; color: black;"
+                                                    href="@Url.Action("Index", "Voucher", new { sortBy = sortBy, SearchString = @Context.Request.Query["SearchString"] })">
+                                                    MinValue 
+                                                </a>
+                                            </th>
+                                            <th  style="text-align: center;">
+                                                @{
+                                                    sortBy = Context.Request.Query["sortBy"] == "Quantity" ?
+                                                    "Quantity_Descending" :
+                                                    "Quantity";
+                                                }
+                                                <a
+                                                    style="text-decoration: none; color: black;"
+                                                    href="@Url.Action("Index", "Voucher", new { sortBy = sortBy, SearchString = @Context.Request.Query["SearchString"] })">
+                                                    Quantity
+                                                </a>
+                                            </th>
+                                            <th style="text-align: center;">
+                                                @{
+                                                    sortBy = Context.Request.Query["sortBy"] == "Used Time" ?
+                                                    "Used Time_Descending" : "Used Time";
+                                                }
+                                                <a
+                                                    style="text-decoration: none; color: black;"
+                                                    href="@Url.Action("Index", "Voucher", new { sortBy = sortBy, SearchString = @Context.Request.Query["SearchString"] })">
+                                                    Used Time
+                                                </a>
+                                            </th>
+                                            <th style="text-align: center;">
+                                                @{
+                                                    sortBy = Context.Request.Query["sortBy"] == "UsageStatus" ? "UsageStatus_Enable" :
+                                                    "UsageStatus";
+                                                }
+                                                <a
+                                                    style="text-decoration: none; color: black;"
+                                                    href="@Url.Action("Index", "Voucher", new { sortBy = sortBy, SearchString = @Context.Request.Query["SearchString"] })">
+                                                    UsageStatus <i class="fa-duotone fa-angles-up-down"></i>
+
+                                                </a>
+                                            </th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="records_table">
+
+                                        <!-- Table body -->
+                                        @foreach (var item in Model)
+                                        {
+                                                <tr>
+                                                    <td>@item.VoucherId</td>
+                                                    <td>@item.PromotionCode</td>
+                                                    <td>@item.PromotionName</td>
+                                                    @if (@item.DiscountType == 1)
+                                                    {
+                                                        <td>@item.DiscountAmount %</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>@item.DiscountAmount đ</td>
+                                                    }
+                                                    <td>@item.MaxiValue</td>
+                                                    <td>@item.MinValue</td>
+                                                    <td>@item.Quantity</td>
+                                                    <td>
+                                                        from :
+                                                        <p>@item.StartDate</p>
+                                                        to :
+                                                        <p>@item.EndDate</p>
+                                                    </td>
+                                                    <td>
+                                                        @{
+                                                            if (@item.UsageStatus == 0 || @item.Quantity == 0)
+                                                            {
+                                                                <div class="col text-center">
+                                                                    <span class="badge badge-pill badge-danger">Disable</span>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="col text-center">
+                                                                    <span class="badge badge-pill badge-success">Enabled</span>
+                                                                </div>
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <p data-placement="top" data-toggle="tooltip" title="Edit">
+                                                            <a asp-action="Edit" asp-route-id="@item.VoucherId"
+                                                                class="btn btn-primary btn-xs">
+                                                               <i class="fa-regular fa-pen-to-square"></i>
+                                                            </a>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p data-placement="top" data-toggle="tooltip" title="Delete">
+                                                            <a asp-action="Delete" asp-route-id=@item.VoucherId
+                                                                class="btn btn-danger btn-xs">
+
+                                                               <i class="fa-regular fa-trash-can"></i>
+                                                               
+                                                            </a>
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                        }
+                                    </tbody>
+                                    <!-- Table footer -->
+                                    <tfoot>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>PromotionCode</th>
+                                            <th>PromotionName</th>
+                                            <th>DiscountAmount</th>
+                                            <th>MaxValue</th>
+                                            <th>MinValue</th>
+                                            <th>Quantity</th>
+                                            <th>Used Time</th>
+                                            <th>UsageStatus</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <!-- Pagination -->
+                                @* <div aria-label="Page navigation example">
+                                    <pager class="pagination"
+                                        options="@PagedListRenderOptions.Bootstrap4PageNumbersPlusPrevAndNext"
+                                        list="@Model" asp-area="" asp-controller="Voucher" asp-action="Index" />
+                                </div> *@
+                                <div class="product__pagination">
+                                    @Html.PagedListPager(Model, page => Url.Action("Index", "Voucher", new { page = page }))
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+        <script>
+
+            $(document).ready(function () {
+                $('#datatable').dataTable();
+                $("[data-toggle=tooltip]").tooltip();
+            });
+
+            function changeIcon(anchor) {
+  var icon = anchor.querySelector("i");
+  icon.classList.toggle('fa-plus');
+  icon.classList.toggle('fa-minus');
+
+   anchor.querySelector("span").textContent = icon.classList.contains('fa-plus') ? "Read more" : "Read less";
+}
+
+        </script>
+    }
+</body>
+
+</html>

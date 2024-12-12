@@ -1,0 +1,41 @@
+﻿@{
+	ViewData["Title"] = "Index";
+}
+
+@model List<App.Model.ItemDetailViewModel>
+@using Microsoft.AspNetCore.Http
+<table class="table table-hover text-nowrap">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Quantity</th>
+			<th>Pro Price</th>
+			<th>Price</th>
+		</tr>
+	</thead>
+	<tbody>
+
+		@if (Model != null && Model.Count() > 0)
+		{
+			foreach (var item in Model)
+			{
+				<tr>
+					<td>@item.productItem.Name</td>
+					<td>@item.orderDetail.Quantity</td>
+					<td>@item.productItem.ProPrice</td>
+					<td>@item.orderDetail.Price</td>
+				</tr>
+			}
+		}
+
+	</tbody>
+</table>
+@{
+		var orderID = ViewBag.IdOrder;
+	}
+@if (!ViewBag.IsProcessed)
+{
+	<a class="btn btn-primary float-right" asp-area="Seller" asp-controller="Orders" asp-action="Processed">Duyệt</a>
+	<a class="btn btn-danger float-right" asp-area="Seller" asp-controller="Orders" asp-action="CancelOrder"
+		asp-route-id="@orderID">Cancel</a>
+}

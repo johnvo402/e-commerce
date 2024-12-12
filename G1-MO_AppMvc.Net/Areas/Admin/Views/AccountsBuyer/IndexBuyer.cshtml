@@ -1,0 +1,82 @@
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<App.Models.AppUser>
+@{
+    ViewData["Title"] = "Account Buyer List";
+    Layout = "Admin/_AdminLayout";
+}
+<h2>@ViewData["Title"]</h2>
+<div class="search-field d-none d-md-block">
+    <form asp-controller="ManageBuyer" asp-action="Search" class="d-flex align-items-center h-100" method="get">
+        <div class="input-group">
+            <div class="input-group-prepend bg-transparent">
+                <i class="input-group-text border-0 mdi mdi-magnify"></i>
+            </div>
+            <input name="name" type="text" class="form-control bg-transparent border-0" placeholder="Search" value="@ViewBag.valuesearch">
+        </div>
+    </form>
+</div>
+<div class="product__pagination">
+    @Html.PagedListPager(Model, page => Url.Action("IndexBuyer", new { page = page }))
+</div>
+<partial name="_StatusMessage"></partial>
+<table class="table">
+    <tr>
+        <th>Username</th>
+        <th>Full Name</th>
+        <th>Date Create</th>
+        <th>Last Login</th>
+        <th>#</th>
+    </tr>
+    @foreach (var user in Model)
+    {
+        
+            <tr>
+                <td>@user.UserName</td>
+                
+                <td>@user.FullName</td>
+                
+                <td>@user.DateCreate</td>
+                <td>@user.LastLogin</td>
+
+
+                <td style="white-space: nowrap;">
+                    @if (user.Status == 1)
+                    {
+                       
+                        
+                            <a class="btn btn-rounded btn-dark btn-sm" asp-action="AddRole" asp-route-id="@user.Id">Edit Infomation</a>
+                        
+                        <a type="button" class="btn btn-rounded text-white text-decoration-none btn-rounded btn-gradient-info btn-sm"  asp-action="Details" asp-route-id="@user.Id">Details</a>
+                        <a type="button" class="btn btn-rounded text-white text-decoration-none btn-rounded btn-gradient-danger btn-sm"  asp-action="Disable" asp-route-id="@user.Id">Disable</a>
+
+                        <a class="btn btn-rounded btn-success btn-sm" asp-action="SetPassword" asp-route-id="@user.Id">Set Password</a>
+
+                    }
+                    else if (user.Status == 0)
+                    {
+                        <form asp-action="Activation" asp-route-id="@user.Id">
+                            <input type="hidden" asp-for="@user.Id" />
+                            <input type="submit" value="Activation" class="btn btn-danger btn-rounded" />
+                        </form>
+                    }
+                   </td>
+                <td>
+                </td>
+            </tr>
+        
+
+    }
+
+</table>
+
+@section Scripts {
+
+
+
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/lib/KnockoutJS/knockout-3.5.1.js"></script>
+    <script src="~/js/site.js"></script>
+    <script src="~/js/chat.js"></script>
+
+
+}

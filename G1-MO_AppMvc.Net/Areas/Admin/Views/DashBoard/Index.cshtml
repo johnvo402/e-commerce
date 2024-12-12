@@ -1,0 +1,270 @@
+﻿@{
+    ViewData["Title"] = "Admin Index";
+}
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-home"></i>
+            </span> Dashboard
+        </h3>
+        <div class="btn-group">
+            <label class="font-weight-bold text-justify text-center m-auto" for="buttonStatistic">Statictis By</label>
+            <button id="buttonStatistic" type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">@ViewBag.Staby</button>
+            <div class="dropdown-menu">
+                <a asp-area="Admin" asp-action="Statictis" asp-route-id="2" class="dropdown-item">1 day</a>
+                <a asp-area="Admin" asp-action="Statictis" asp-route-id="7" class="dropdown-item">7 days</a>
+                <a asp-area="Admin" asp-action="Statictis" asp-route-id="30" class="dropdown-item">30 days</a>
+                <a asp-area="Admin" asp-action="Statictis" asp-route-id="365" class="dropdown-item">Year</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-danger card-img-holder text-white">
+                <div class="card-body">
+                    <img src="~/AdminAssets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">
+                        Sales <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+                    </h4>
+                    <h2 class="mb-5">@ViewBag.CurrentWeekTotal $</h2>
+                    <h6 class="card-text">Ratio @ViewBag.PercentageChange %</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-info card-img-holder text-white">
+                <div class="card-body">
+                    <img src="~/AdminAssets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">
+                        Orders <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+                    </h4>
+                    <h2 class="mb-5">@ViewBag.OrdersCount</h2>
+                    <h6 class="card-text">Ratio @ViewBag.OrderPercnet%</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-success card-img-holder text-white">
+                <div class="card-body">
+                    <img src="~/AdminAssets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">
+                        Accounts <i class="mdi mdi-diamond mdi-24px float-right"></i>
+                    </h4>
+                    <h2 class="mb-5">@ViewBag.TotalUserCount</h2>
+                    <h6 class="card-text">Ratio @ViewBag.PrecentAcc</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="clearfix">
+                        <h4 class="card-title float-left">Visit And Sales Statistics</h4>
+                        <select id="selectyear" class="form-control mb-4" style="width: 100px;">
+                            @foreach (var item in ViewBag.AccountYear)
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        </select>
+                        <div id="visit-sale-chart-legend" class="rounded-legend legend-horizontal legend-top-right float-right"></div>
+                    </div>
+                    <div id="dvChart"></div>
+                </div>
+            </div>
+        </div>
+        @section Scripts {
+            <script src="~/AdminAssets/js/dashboard.js"></script>
+            <script>
+                $('#selectyear').on('change', function(){
+                    var year = $(this).val();
+                    var url = '@Url.Action("GetDataChart", "Dashboard", new { area = "Admin", year = "YEAR_PLACEHOLDER" })';
+                    url = url.replace('YEAR_PLACEHOLDER', year);
+                    $.get(url, function (resp) {
+                        
+                        ChartAccount(resp);
+                    });
+                });
+                var chartData = @Html.Raw(ViewBag.JsonData);
+
+                console.log(chartData);
+                if (chartData != null) {
+
+                    ChartAccount(chartData);
+                }
+                
+                function ChartAccount(data) {
+
+                    $("canvas#visit-sale-chart").remove();
+                    $("#dvChart").html('<canvas id="visit-sale-chart" class="mt-4"></canvas>');
+
+
+                    var lsDataBuyer = [];
+                    var lsDataSeller = [];
+                    var lsDataDisable = [];
+                    if (data.item1 != null) {
+                        $.each(data.item1, function (index, item) {
+                            lsDataBuyer.push(item.accountCount);
+                        });
+
+                        $.each(data.item2, function (index, item) {
+                            lsDataSeller.push(item.accountCount);
+                        });
+                        $.each(data.item3, function (index, item) {
+                            lsDataDisable.push(item.accountCount);
+                        });
+                    } else {
+                        for (var i = 0; i < data["Item1"].length; i++) {
+                            lsDataBuyer.push(data["Item1"][i].AccountCount);
+                        }
+
+                        for(var i = 0; i < data["Item2"].length; i++) {
+                            lsDataSeller.push(data["Item2"][i].AccountCount);
+                        }
+                        for (var i = 0; i < data["Item3"].length; i++) {
+                            lsDataDisable.push(data["Item3"][i].AccountCount);
+                        }
+                    }
+                   
+
+                    console.log(lsDataBuyer);
+                    console.log(lsDataSeller);
+                    if ($("#visit-sale-chart").length) {
+                        Chart.defaults.global.legend.labels.usePointStyle = true;
+                        var canvas = document.getElementById('visit-sale-chart'); // Lấy đối tượng canvas
+                        var currentHeight = canvas.height; // Lấy chiều cao hiện tại của canvas
+                        var percent = 50; // Phần trăm chiều cao mới (ở đây là 50%, bạn có thể thay đổi giá trị này tùy ý)
+
+                        // Tính toán chiều cao mới dựa trên phần trăm
+                        var newHeight = (currentHeight * percent) / 100;
+
+                        // Gán chiều cao mới cho canvas
+                        canvas.height = newHeight;
+
+                        var ctx = canvas.getContext("2d"); // Lấy ngữ cảnh vẽ 2D của canvas
+
+                        var gradientStrokeViolet = ctx.createLinearGradient(0, 0, 0, 181);
+                        gradientStrokeViolet.addColorStop(0, 'rgba(218, 140, 255, 1)');
+                        gradientStrokeViolet.addColorStop(1, 'rgba(154, 85, 255, 1)');
+                        var gradientLegendViolet = 'linear-gradient(to right, rgba(218, 140, 255, 1), rgba(154, 85, 255, 1))';
+
+                        var gradientStrokeBlue = ctx.createLinearGradient(0, 0, 0, 360);
+                        gradientStrokeBlue.addColorStop(0, 'rgba(54, 215, 232, 1)');
+                        gradientStrokeBlue.addColorStop(1, 'rgba(177, 148, 250, 1)');
+                        var gradientLegendBlue = 'linear-gradient(to right, rgba(54, 215, 232, 1), rgba(177, 148, 250, 1))';
+
+                        var gradientStrokeRed = ctx.createLinearGradient(0, 0, 0, 300);
+                        gradientStrokeRed.addColorStop(0, 'rgba(255, 191, 150, 1)');
+                        gradientStrokeRed.addColorStop(1, 'rgba(254, 112, 150, 1)');
+                        var gradientLegendRed = 'linear-gradient(to right, rgba(255, 191, 150, 1), rgba(254, 112, 150, 1))';
+                        var myChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+                                datasets: [
+                                    {
+                                        label: "Buyer",
+                                        borderColor: gradientStrokeViolet,
+                                        backgroundColor: gradientStrokeViolet,
+                                        hoverBackgroundColor: gradientStrokeViolet,
+                                        legendColor: gradientLegendViolet,
+                                        pointRadius: 0,
+                                        fill: false,
+                                        borderWidth: 2,
+                                        fill: 'origin',
+                                        data: lsDataBuyer
+                                    },
+                                    {
+                                        label: "Seller",
+                                        borderColor: gradientStrokeRed,
+                                        backgroundColor: gradientStrokeRed,
+                                        hoverBackgroundColor: gradientStrokeRed,
+                                        legendColor: gradientLegendRed,
+                                        pointRadius: 0,
+                                        fill: false,
+                                        borderWidth: 2,
+                                        fill: 'origin',
+                                        data: lsDataSeller
+                                    },
+                                    {
+                                        label: "Disable",
+                                        borderColor: gradientStrokeBlue,
+                                        backgroundColor: gradientStrokeBlue,
+                                        hoverBackgroundColor: gradientStrokeBlue,
+                                        legendColor: gradientLegendBlue,
+                                        pointRadius: 0,
+                                        fill: false,
+                                        borderWidth: 2,
+                                        fill: 'origin',
+                                        data: lsDataDisable
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                legend: false,
+                                legendCallback: function (chart) {
+                                    var text = [];
+                                    text.push('<ul>');
+                                    for (var i = 0; i < chart.data.datasets.length; i++) {
+                                        text.push('<li><span class="legend-dots" style="background:' +
+                                            chart.data.datasets[i].legendColor +
+                                            '"></span>');
+                                        if (chart.data.datasets[i].label) {
+                                            text.push(chart.data.datasets[i].label);
+                                        }
+                                        text.push('</li>');
+                                    }
+                                    text.push('</ul>');
+                                    return text.join('');
+                                },
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            display: false,
+                                            min: 0,
+                                            stepSize: 2,
+                                            max: 15
+                                        },
+                                        gridLines: {
+                                            drawBorder: false,
+                                            color: 'rgba(235,237,242,1)',
+                                            zeroLineColor: 'rgba(235,237,242,1)'
+                                        }
+                                    }],
+                                    xAxes: [{
+                                        gridLines: {
+                                            display: false,
+                                            drawBorder: false,
+                                            color: 'rgba(0,0,0,1)',
+                                            zeroLineColor: 'rgba(235,237,242,1)'
+                                        },
+                                        ticks: {
+                                            padding: 20,
+                                            fontColor: "#9c9fa6",
+                                            autoSkip: true,
+                                        },
+                                        categoryPercentage: 0.5,
+                                        barPercentage: 0.5
+                                    }]
+                                }
+                            },
+                            elements: {
+                                point: {
+                                    radius: 0
+                                }
+                            }
+                        })
+
+                        $("#visit-sale-chart-legend").html(myChart.generateLegend());
+                    }
+                }
+              
+              
+            </script>
+        }
+       
+</div>

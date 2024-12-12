@@ -1,0 +1,99 @@
+﻿@model App.Model.ProProItems
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using System.Text.Json
+
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+	ViewData["Title"] = "Create";
+	var httpContext = HttpContextAccessor.HttpContext;
+	SelectList idCateList = null;
+	var idCateListJson = httpContext.Session.GetString("IdCateList");
+	if (idCateListJson == null)
+	{
+		<text>
+			<script>
+				window.location.href = "/Product/Create";
+			</script>
+		</text>
+	}
+	else
+	{
+		var idCateListItems = JsonSerializer.Deserialize<SelectListItem[]>(idCateListJson);
+		idCateList = new SelectList(idCateListItems, "Value", "Text");
+	}
+}
+
+<h1>Create</h1>
+
+<h4>Product</h4>
+<hr />
+<div class="row justify-content-center">
+	<div class="col-md-8">
+		<a class="btn btn-primary" asp-action="Index">Back to list</a>
+		<hr />
+		<form asp-action="Create" enctype="multipart/form-data">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+			<div class="form-group row">
+				<div class="col-md-6">
+					<label asp-for="@Model.products.Name" class="control-label"></label>
+					<input asp-for="@Model.products.Name" class="form-control" />
+					<span asp-validation-for="@Model.products.Name" class="text-danger"></span>
+				</div>
+
+				<div class="col-md-6">
+					<label asp-for="@Model.productItems.Name" class="control-label"></label>
+					<input asp-for="@Model.productItems.Name" class="form-control" />
+					<span asp-validation-for="@Model.productItems.Name" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-md-6">
+					<label asp-for="@Model.productItems.Quantity" class="control-label"></label>
+					<input asp-for="@Model.productItems.Quantity" class="form-control" />
+					<span asp-validation-for="@Model.productItems.Quantity" class="text-danger"></span>
+				</div>
+
+				<div class="col-md-6">
+					<label asp-for="@Model.productItems.ProPrice" class="control-label"></label>
+					<input asp-for="@Model.productItems.ProPrice" class="form-control" />
+					<span asp-validation-for="@Model.productItems.ProPrice" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-md-6">
+					<label asp-for="@Model.productItems.Discount" class="control-label"></label>
+					<input asp-for="@Model.productItems.Discount" class="form-control" />
+					<span asp-validation-for="@Model.productItems.Discount" class="text-danger"></span>
+				</div>
+
+				<div class="col-md-6">
+					<label class="control-label">Category</label>
+					<select asp-for="@Model.products.IdCate" class="form-control" asp-items="@idCateList"></select>
+
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label asp-for="@Model.products.Description" class="control-label"></label>
+				<textarea asp-for="@Model.products.Description" class="form-control" rows="4"></textarea>
+				<span asp-validation-for="@Model.products.Description" class="text-danger"></span>
+			</div>
+
+			<div class="form-group">
+				<label asp-for="@Model.imgFiles" class="control-label"></label>
+				<input asp-for="@Model.imgFiles" type="file" multiple class="form-control-file" />
+				<span asp-validation-for="@Model.imgFiles" class="text-danger"></span>
+			</div>
+
+			<div class="form-group">
+				<input type="submit" value="Create" class="btn btn-primary" />
+				<input type="reset" value="Reset" class="btn btn-danger" />
+			</div>
+		</form>
+	</div>
+</div>

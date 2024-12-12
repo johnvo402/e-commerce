@@ -1,0 +1,42 @@
+﻿@model App.Model.ProProItems
+@{
+	ViewData["Title"] = "CreateItems";
+}
+
+
+<h1>Create  Items</h1>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<a class="btn btn-primary" asp-action="Index">Back to list</a>
+		<hr />
+		<form asp-action="CreateItems" method="post">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="text" hidden asp-for="@Model.productItems.IdPro" value="@ViewBag.IdPro">
+			<div class="form-group">
+				<label asp-for="@Model.productItems.Name" class="control-label"></label>
+				<input asp-for="@Model.productItems.Name" class="form-control" />
+				<span asp-validation-for="@Model.productItems.Name" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="@Model.productItems.Quantity" class="control-label"></label>
+				<input asp-for="@Model.productItems.Quantity" class="form-control" />
+				<span asp-validation-for="@Model.productItems.Quantity" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="@Model.productItems.ProPrice" class="control-label"></label>
+				<input asp-for="@Model.productItems.ProPrice" class="form-control" />
+				<span asp-validation-for="@Model.productItems.ProPrice" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Discount</label>
+				<input asp-for="@Model.productItems.Name" class="form-control" />
+				<span asp-validation-for="@Model.productItems.Name" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Create" class="btn btn-primary" />
+				<input type="reset" value="Reset" class="btn btn-danger" />
+			</div>
+		</form>
+	</div>
+</div>

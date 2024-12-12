@@ -1,0 +1,148 @@
+﻿@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<App.Model.Product>
+
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    int PageNext = CurrentPage + 1;
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
+}
+@section Style {
+    <style>
+        .product__pagination,
+        .blog__pagination {
+            padding-top: 10px;
+        }
+
+        .product__pagination a,
+        .blog__pagination a {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 1px solid #b2b2b2;
+            font-size: 14px;
+            color: #b2b2b2;
+            font-weight: 700;
+            line-height: 28px;
+            text-align: center;
+            margin-right: 16px;
+            -webkit-transition: all, 0.3s;
+            -moz-transition: all, 0.3s;
+            -ms-transition: all, 0.3s;
+            -o-transition: all, 0.3s;
+            transition: all, 0.3s;
+        }
+
+        .product__pagination a:hover,
+        .blog__pagination a:hover {
+            background: #7fad39;
+            border-color: #7fad39;
+            color: #ffffff;
+        }
+
+        .product__pagination a:last-child,
+        .blog__pagination a:last-child {
+            margin-right: 16px;
+        }
+
+        .product__pagination .active {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 1px solid #b2b2b2;
+            font-size: 14px;
+            background: #7fad39;
+            border-color: #7fad39;
+            color: #ffffff;
+            font-weight: 700;
+            line-height: 28px;
+            text-align: center;
+            margin-right: 16px;
+            -webkit-transition: all, 0.3s;
+            -moz-transition: all, 0.3s;
+            -ms-transition: all, 0.3s;
+            -o-transition: all, 0.3s;
+            transition: all, 0.3s;
+        }
+    </style>
+}
+<div class="container">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Img
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Kinds
+                    </th>
+                    <th>
+                        #
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+
+                    <tr>
+                        <td>
+                            @foreach (var img in item.ImgPros)
+                            {
+                                <img style="max-width:150px;" src="~/assests/img/product/@img.LinkImg" />
+                                break;
+                            }
+
+                        </td>
+                        <td>
+
+                            @Html.DisplayFor(modelItem => item.Name)
+
+                        </td>
+                        <td>
+
+                            @Html.DisplayFor(modelItem => item.Description)
+
+                        </td>
+
+                        <td>
+                            @foreach (var proitem in item.ProductItems)
+                            {
+
+                                @Html.DisplayFor(modelItem => proitem.Name) <br />
+
+                            }
+                        </td>
+
+                        <td style="white-space: nowrap;">
+                            @if (item.StatusPro == 1)
+                            {
+
+
+                                <a class="btn btn-rounded btn-danger" asp-action="Delete" asp-route-id="@item.IdPro"
+                                    asp-route-userid="@ViewBag.url">Delete</a>
+                            }
+                            else if (item.StatusPro == 3)
+                            {
+                                <a class="btn btn-rounded btn-danger" asp-action="Ativation" asp-route-id="@item.IdPro"
+                                    asp-route-userid="@ViewBag.url">Ativation</a>
+                            }
+                        </td>
+                    </tr>
+
+
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="product__pagination">
+        @Html.PagedListPager(Model, page => Url.Action("IndexProSeller", new { page = page }))
+    </div>
+</div>

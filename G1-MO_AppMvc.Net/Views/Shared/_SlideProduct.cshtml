@@ -1,0 +1,140 @@
+﻿<section class="latest-product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="latest-product__text">
+                    <h4>Latest Products</h4>
+                    <div class="latest-product__slider owl-carousel">
+                        <div class="latest-prdouct__slider__item">
+                            @foreach (var lasted in ViewBag.lsLasted1)
+
+                            { 
+
+                                string url = $"/{lasted.products.Name}-{lasted.products.IdPro}";
+                                <a href="@url" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="/assests/img/latest-product/lp-1.jpg" alt="">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>@lasted.products.Name</h6>
+                                        <span>@lasted.productItems.ProPrice</span>
+                                    </div>
+                                </a>
+                            }
+                        </div>
+                        <div class="latest-prdouct__slider__item">
+                            @foreach (var lasted in ViewBag.lsLasted2)
+
+                            {
+
+                                string url = $"/{lasted.products.Name}-{lasted.products.IdPro}";
+                                <a href="@url" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="/assests/img/latest-product/lp-1.jpg" alt="">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>@lasted.products.Name</h6>
+                                        <span>@lasted.productItems.ProPrice</span>
+                                    </div>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="latest-product__text">
+                    <h4>Top Rated Products</h4>
+                    <div class="latest-product__slider owl-carousel">
+                        <div class="latest-prdouct__slider__item">
+                            @foreach (var rated in ViewBag.lsRated1)
+
+                            {
+
+                                string url = $"/{rated.products.Name}-{rated.products.IdPro}";
+                                <a href="@url" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="/assests/img/latest-product/lp-1.jpg" alt="">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>@rated.products.Name</h6>
+                                        <span>@rated.productItems.ProPrice</span>
+                                    </div>
+                                </a>
+                            }
+                        </div>
+                        <div class="latest-prdouct__slider__item">
+                            @foreach (var rated in ViewBag.lsRated2)
+
+                            {
+
+                                string url = $"/{rated.products.Name}-{rated.products.IdPro}";
+                                <a href="@url" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="/assests/img/latest-product/lp-1.jpg" alt="">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>@rated.products.Name</h6>
+                                        <span>@rated.productItems.ProPrice</span>
+                                    </div>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-4 col-md-6">
+                <div class="latest-product__text">
+                    <h4>Top Sale Products</h4>
+                    <div class="latest-product__slider owl-carousel">
+                        <div class="latest-prdouct__slider__item">
+                            @foreach (var sale in ViewBag.lsSale1)
+
+                            {
+
+                                string url = $"/{sale.products.Name}-{sale.products.IdPro}";
+
+                                var discounted = @sale.productItems.ProPrice * (@sale.productItems.Discount / 100);
+                                <a href="@url" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="/assests/img/latest-product/lp-1.jpg" alt="">
+                                    </div>
+                                    <div class="product__discount__item__text">
+                                        <h6>@sale.products.Name</h6>
+                                        <div class="product__item__price">
+                                                        @discounted<span>@sale.productItems.ProPrice</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            }
+                        </div>
+                        <div class="latest-prdouct__slider__item">
+                            @foreach (var sale in ViewBag.lsSale2)
+
+                            {
+
+                                string url = $"/{sale.products.Name}-{sale.products.IdPro}";
+                                var discounted = @sale.productItems.ProPrice * (@sale.productItems.Discount / 100);
+                                <a href="@url" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="/assests/img/latest-product/lp-1.jpg" alt="">
+                                    </div>
+                                    <div class="product__discount__item__text">
+                                        <h6>@sale.products.Name</h6>
+                                        <div class="product__item__price">
+                                                        @discounted<span>@sale.productItems.ProPrice</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

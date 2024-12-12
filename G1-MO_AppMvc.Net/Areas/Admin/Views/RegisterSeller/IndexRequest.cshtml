@@ -1,0 +1,69 @@
+﻿@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<App.Models.AppUser>
+@{
+    ViewData["Title"] = "List Request Become Seller";
+    Layout = "Admin/_AdminLayout";
+}
+<h2>@ViewData["Title"]</h2>
+<div class="product__pagination">
+    @Html.PagedListPager(Model, page => Url.Action("IndexRequest", new { page = page }))
+</div>
+<partial name="_StatusMessage"></partial>
+
+<table class="table" >
+    <tr>
+        <th>Username</th>
+        <th>Full Name</th>
+        <th>Date Create</th>
+        <th>Last Login</th>
+        <th>#</th>
+    </tr>
+    @if(Model.Count() > 0)
+    {
+        @foreach (var user in Model)
+        {
+           
+                <tr>
+                    <td>@user.UserName</td>
+
+                    <td>@user.FullName</td>
+
+                    <td>@user.DateCreate</td>
+                    <td>@user.LastLogin</td>
+
+
+                <td style="white-space: nowrap;">
+
+                        <a type="button" class="btn btn-rounded text-white text-decoration-none btn-rounded btn-gradient-info btn-sm" asp-action="Details" asp-route-id="@user.Id">Details</a>
+
+                        <form asp-action="Accept" asp-route-id="@user.Id">
+                            <input type="hidden" asp-for="@user.Id" />
+                            <input type="submit" value="Accept" class="btn btn-success btn-rounded" />
+                        </form>
+                        <form asp-action="Cancel" asp-route-id="@user.Id">
+                            <input type="hidden" asp-for="@user.Id" />
+                            <input type="submit" value="Cancel" class="btn btn-danger btn-rounded" />
+                        </form>
+
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            }
+
+        
+    }
+
+</table>
+
+@section Scripts {
+
+
+
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/lib/KnockoutJS/knockout-3.5.1.js"></script>
+    <script src="~/js/site.js"></script>
+    <script src="~/js/chat.js"></script>
+
+
+}
